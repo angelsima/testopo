@@ -1,4 +1,4 @@
-const bancoPreguntas = {
+const bancoAuxiliar = {
   constitucion: {
     titulo1: [
       {
