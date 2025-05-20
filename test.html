@@ -15,27 +15,39 @@
   <h1 id="testTitulo"></h1>
   <form id="quizForm"></form>
   <div id="score"></div>
-  <button onclick="corregir()">Corregir</button>
+  <button onclick="corregir()">Corregir Test</button>
 
- <script>
- const urlParams = new URLSearchParams(window.location.search);
-  const categoria = urlParams.get('categoria');
+  <script>
+    // Cargar primero el archivo de preguntas
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoria = urlParams.get('categoria');
+    
+    function iniciarTest() {
+      // Esta función se llamará después de cargar las preguntas
+      const params = new URLSearchParams(window.location.search);
+      if (typeof cargarTest === 'function') {
+        cargarTest(
+          params.get('categoria'),
+          params.get('tema'),
+          params.get('subtema'),
+          parseInt(params.get('num'))
+        );
+      } else {
+        console.error('La función cargarTest no está definida');
+      }
+    }
+
+    // Crear y cargar el script de preguntas
+    const script = document.createElement('script');
+    script.src = `preguntas_${categoria}.js`;
+    script.onload = iniciarTest;
+    script.onerror = () => {
+      document.getElementById('quizForm').innerHTML = 
+        '<p>Error: No se pudo cargar el archivo de preguntas</p>';
+    };
+    document.head.appendChild(script);
+  </script>
   
-  // Cargar el script de preguntas dinámicamente
-  const script = document.createElement('script');
-  script.src = `preguntas_${categoria}.js`;
-  script.onload = () => {
-    // Iniciar test después de cargar las preguntas
-    const params = new URLSearchParams(window.location.search);
-    cargarTest(
-      params.get('categoria'),
-      params.get('tema'),
-      params.get('subtema'),
-      parseInt(params.get('num'))
-    );
-  };
-  document.head.appendChild(script);
-</script>
   <script src="test.js"></script>
 </body>
 </html>
