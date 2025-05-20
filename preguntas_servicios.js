@@ -1,4 +1,4 @@
-const bancoPreguntas = {
+const bancoServicios = {
   "constitucion": {
     "estructura": [
       {
