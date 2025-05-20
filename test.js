@@ -10,8 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function cargarTest(categoria, tema, num) { // Recibir parámetros individuales
   let preguntas = [];
   
-  let preguntas = [];
-  
  // 1. Filtrar por tema
   if (tema === 'all') {
     // Recorrer todos los temas de la categoría
