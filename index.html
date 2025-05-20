@@ -17,10 +17,10 @@
   <div class="selector">
     <h2>Selecciona tu test:</h2>
    <select id="categoriaSelect">
-    <option value="all">Todas las categorías</option>
+ <option value="all">Todas las categorías</option>
     <option value="servicios">Agrupación Profesional de Servicios</option>
-    <option value="auxiliar">Auxiliar Administrativo</option>
-    <option value="administrativo">Administrativo</option>
+    <option value="auxiliar">Auxiliar Administrativo (Aún Vacío)</option>
+    <option value="administrativo">Administrativo (Aún Vacío)</option>
   </select>
 
   <select id="temaSelect">
@@ -60,33 +60,62 @@ function cargarTemas() {
   const temaSelect = document.getElementById('temaSelect');
   temaSelect.innerHTML = '<option value="all">Todos los temas</option>';
   
-// Cargar temas principales
-    Object.keys(temasPorCategoria[categoria]).forEach(tema => {
-      const option = document.createElement('option');
-      option.value = tema; 
-      option.textContent = tema;
-      temaSelect.appendChild(option);
+// Si se elige "all", mostrar temas combinados de todas las categorías
+  let temas = {};
+
+  if (categoria === 'all') {
+    Object.values(temasPorCategoria).forEach(cat => {
+      Object.entries(cat).forEach(([tema, subtemas]) => {
+        temas[tema] = subtemas;
+      });
     });
+  } else {
+    temas = temasPorCategoria[categoria];
+  }
+
+  // Rellenar select de temas
+  Object.keys(temas).forEach(tema => {
+    const option = document.createElement('option');
+    option.value = tema;
+    option.textContent = tema;
+    temaSelect.appendChild(option);
+  });
     
     cargarSubtemas(); // Cargar subtemas iniciales
   }
+
 function cargarSubtemas() {
-    const categoria = document.getElementById('categoriaSelect').value;
-    const tema = document.getElementById('temaSelect').value;
-    const subtemaSelect = document.getElementById('subtemaSelect');
-    
-    subtemaSelect.innerHTML = '<option value="all">Todos los subtemas</option>';
-    
-     if (tema !== 'all') {
-        const subtemas = temasPorCategoria[categoria][tema];
-        subtemas.forEach(subtema => {
-          const option = document.createElement('option');
-          option.value = subtema;     // <- sin normalizar
-          option.textContent = subtema;
-          subtemaSelect.appendChild(option);
-        });
+  const categoria = document.getElementById('categoriaSelect').value;
+  const tema = document.getElementById('temaSelect').value;
+  const subtemaSelect = document.getElementById('subtemaSelect');
+  subtemaSelect.innerHTML = '<option value="all">Todos los subtemas</option>';
+
+  let subtemas = [];
+
+  if (categoria === 'all') {
+    Object.values(temasPorCategoria).forEach(cat => {
+      if (tema === 'all') {
+        Object.values(cat).forEach(subs => subtemas.push(...subs));
+      } else if (cat[tema]) {
+        subtemas.push(...cat[tema]);
+      }
+    });
+  } else {
+    if (tema !== 'all') {
+      subtemas = temasPorCategoria[categoria][tema] || [];
     }
   }
+
+  // Eliminar duplicados
+  const subtemasUnicos = [...new Set(subtemas)];
+
+  subtemasUnicos.forEach(subtema => {
+    const option = document.createElement('option');
+    option.value = subtema;
+    option.textContent = subtema;
+    subtemaSelect.appendChild(option);
+  });
+}
 // Event listeners
   document.getElementById('categoriaSelect').addEventListener('change', () => {
     cargarTemas();
