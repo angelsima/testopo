@@ -29,8 +29,7 @@ const bancoPreguntas = {
       },
       // Más preguntas...
     ]
-  }
-},
+  },
   prevencion_riesgos: {
     basicos: [
       {
