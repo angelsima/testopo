@@ -18,10 +18,22 @@
   <button onclick="corregir()">Corregir</button>
 
  <script>
-  const urlParams = new URLSearchParams(window.location.search);
+ const urlParams = new URLSearchParams(window.location.search);
   const categoria = urlParams.get('categoria');
+  
+  // Cargar el script de preguntas dinámicamente
   const script = document.createElement('script');
   script.src = `preguntas_${categoria}.js`;
+  script.onload = () => {
+    // Iniciar test después de cargar las preguntas
+    const params = new URLSearchParams(window.location.search);
+    cargarTest(
+      params.get('categoria'),
+      params.get('tema'),
+      params.get('subtema'),
+      parseInt(params.get('num'))
+    );
+  };
   document.head.appendChild(script);
 </script>
   <script src="test.js"></script>
