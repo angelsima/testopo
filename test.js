@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
-  cargarTest(params.get('tema'), params.get('subtema'), params.get('num'));
+  cargarTest(
+    params.get('categoria'),  // Nuevo parámetro añadido
+    params.get('tema'),
+    parseInt(params.get('num')) // Convertir a número
+  );
 });
 
 function cargarTest(params) {
