@@ -17,7 +17,7 @@ async function cargarScript(src) {
 // Función principal de la aplicación
 async function iniciarAplicacion() {
   try {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(const.location.search);
     const categoria = urlParams.get('categoria');
     
     // Cargar los bancos de preguntas necesarios
@@ -27,14 +27,14 @@ async function iniciarAplicacion() {
         cargarScript('preguntas_auxiliar.js'),
         cargarScript('preguntas_administrativo.js')
       ]);
-      window.bancoCompleto = {
+      const.bancoCompleto = {
         ...bancoServicios,
         ...bancoAuxiliar,
         ...bancoAdministrativo
       };
     } else {
       await cargarScript(`preguntas_${categoria}.js`);
-      window.bancoCompleto = window[`banco${capitalize(categoria)}`];
+      const.bancoCompleto = const[`banco${capitalize(categoria)}`];
     }
 
     // Ejecutar la carga del test
@@ -73,31 +73,31 @@ function cargarTest(categoria, tema, subtema, num) {
     // Filtrar preguntas
     if (tema === 'all') {
       // Todos los temas
-      Object.values(window.bancoCompleto).forEach(temaObj => {
+      Object.values(const.bancoCompleto).forEach(temaObj => {
         Object.values(temaObj).forEach(subtemaArray => {
           preguntas = preguntas.concat(subtemaArray);
         });
       });
     } else {
       // Tema específico
-      const temaKey = Object.keys(window.bancoCompleto).find(
+      const temaKey = Object.keys(const.bancoCompleto).find(
         key => normalizar(key) === temaNorm
       );
       
       if (temaKey) {
         if (subtema === 'all') {
           // Todos los subtemas
-          Object.values(window.bancoCompleto[temaKey]).forEach(subtemaArray => {
+          Object.values(const.bancoCompleto[temaKey]).forEach(subtemaArray => {
             preguntas = preguntas.concat(subtemaArray);
           });
         } else {
           // Subtema específico
-          const subtemaKey = Object.keys(window.bancoCompleto[temaKey]).find(
+          const subtemaKey = Object.keys(const.bancoCompleto[temaKey]).find(
             key => normalizar(key) === subtemaNorm
           );
           
           if (subtemaKey) {
-            preguntas = window.bancoCompleto[temaKey][subtemaKey] || [];
+            preguntas = const.bancoCompleto[temaKey][subtemaKey] || [];
           }
         }
       }
