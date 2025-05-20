@@ -58,27 +58,56 @@ function cargarTemas() {
   const temaSelect = document.getElementById('temaSelect');
   temaSelect.innerHTML = '<option value="all">Todos los temas</option>';
   
-  temasPorCategoria[categoria].forEach(tema => {
-    const option = document.createElement('option');
-    option.value = tema.toLowerCase();
-    option.textContent = tema.replace(/_/g, ' ');
-    temaSelect.appendChild(option);
+// Cargar temas principales
+    Object.keys(temasPorCategoria[categoria]).forEach(tema => {
+      const option = document.createElement('option');
+      option.value = tema.toLowerCase().replace(/ /g, '_');
+      option.textContent = tema;
+      temaSelect.appendChild(option);
+    });
+    
+    cargarSubtemas(); // Cargar subtemas iniciales
+  }
+function cargarSubtemas() {
+    const categoria = document.getElementById('categoriaSelect').value;
+    const tema = document.getElementById('temaSelect').value;
+    const subtemaSelect = document.getElementById('subtemaSelect');
+    
+    subtemaSelect.innerHTML = '<option value="all">Todos los subtemas</option>';
+    
+    if (tema !== 'all') {
+      const temaKey = tema.replace(/_/g, ' ');
+      const subtemas = temasPorCategoria[categoria][temaKey];
+      
+      subtemas.forEach(subtema => {
+        const option = document.createElement('option');
+        option.value = subtema.toLowerCase().replace(/ /g, '_');
+        option.textContent = subtema;
+        subtemaSelect.appendChild(option);
+      });
+    }
+  }
+// Event listeners
+  document.getElementById('categoriaSelect').addEventListener('change', () => {
+    cargarTemas();
   });
-}
 
-// Cargar temas al cambiar categoría
-document.getElementById('categoriaSelect').addEventListener('change', cargarTemas);
-cargarTemas(); // Carga inicial
-
-function generarTest() {
-  const params = new URLSearchParams({
-    categoria: document.getElementById('categoriaSelect').value,
-    tema: document.getElementById('temaSelect').value,
-    num: document.getElementById('numPreguntas').value
+  document.getElementById('temaSelect').addEventListener('change', () => {
+    cargarSubtemas();
   });
-  
-  window.location.href = `test.html?${params.toString()}`;
-}
+// Carga inicial
+  cargarTemas();
+
+  function generarTest() {
+    const params = new URLSearchParams({
+      categoria: document.getElementById('categoriaSelect').value,
+      tema: document.getElementById('temaSelect').value,
+      subtema: document.getElementById('subtemaSelect').value,
+      num: document.getElementById('numPreguntas').value
+    });
+    
+    window.location.href = `test.html?${params.toString()}`;
+  }
   </script>
 </body>
 </html>
