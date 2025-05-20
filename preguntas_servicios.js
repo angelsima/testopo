@@ -19,7 +19,7 @@ const bancoPreguntas = {
       // Más preguntas...
     ]
   },
-  estatuto_murcia: {
+  estatuto: {
     general: [
       {
         texto: "¿En qué año se aprobó el Estatuto de Autonomía de Murcia?",
