@@ -10,17 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
 function cargarTest(categoria, tema, num) { // Recibir parámetros individuales
   let preguntas = [];
   
- // 1. Filtrar por tema
+  // 1. Filtrar preguntas
   if (tema === 'all') {
-    // Recorrer todos los temas de la categoría
-    Object.values(bancoPreguntas).forEach(tema => {
-      Object.values(tema).forEach(subtema => {
+    // Recorrer TODOS los temas de la categoría
+    Object.values(bancoPreguntas).forEach(temaObj => {
+      Object.values(temaObj).forEach(subtema => {
         preguntas = preguntas.concat(subtema);
       });
     });
   } else {
-    // Buscar preguntas del tema específico
-    const temaSeleccionado = bancoPreguntas[tema.toLowerCase()];
+    // Buscar el tema específico (usar notación de corchetes para nombres con espacios)
+    const temaSeleccionado = bancoPreguntas[tema];
     if (temaSeleccionado) {
       Object.values(temaSeleccionado).forEach(subtema => {
         preguntas = preguntas.concat(subtema);
