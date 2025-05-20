@@ -15,28 +15,54 @@
   
   <div class="selector">
     <h2>Selecciona tu test:</h2>
-    <select id="temaSelect">
-      <option value="constitucion">Constitución Española</option>
-      <option value="estatuto_murcia">Estatuto de Autonomía de Murcia</option>
-    </select>
-    
-    <select id="subtemaSelect">
-      <option value="all">Todos los temas</option>
-      <option value="titulo1">Título I: Derechos Fundamentales</option>
-      <option value="titulo2">Título II: La Corona</option>
-    </select>
-    
+   <select id="categoriaSelect">
+    <option value="servicios">Agrupación Profesional de Servicios</option>
+    <option value="auxiliar">Auxiliar Administrativo</option>
+    <option value="administrativo">Administrativo</option>
+  </select>
+
+  <select id="temaSelect">
+    <!-- Opciones se cargarán dinámicamente según categoría -->
+  </select>
+       
     <input type="number" id="numPreguntas" min="5" max="50" value="10">
     <button onclick="generarTest()">Comenzar Test</button>
   </div>
 
   <script>
-    function generarTest() {
-      const tema = document.getElementById('temaSelect').value;
-      const subtema = document.getElementById('subtemaSelect').value;
-      const num = document.getElementById('numPreguntas').value;
-      window.location.href = `test.html?tema=${tema}&subtema=${subtema}&num=${num}`;
-    }
+ // Datos de temas por categoría (podría ir en un JS aparte)
+const temasPorCategoria = {
+  servicios: ["Constitucion", "Estatuto", "Prevención Riesgos"],
+  auxiliar: ["Constitucion", "Estatuto", "Procedimiento Administrativo"],
+  administrativo: ["Constitucion", "Estatuto", "Contratación Pública", "Presupuestos"]
+};
+
+function cargarTemas() {
+  const categoria = document.getElementById('categoriaSelect').value;
+  const temaSelect = document.getElementById('temaSelect');
+  temaSelect.innerHTML = '<option value="all">Todos los temas</option>';
+  
+  temasPorCategoria[categoria].forEach(tema => {
+    const option = document.createElement('option');
+    option.value = tema.toLowerCase();
+    option.textContent = tema;
+    temaSelect.appendChild(option);
+  });
+}
+
+// Cargar temas al cambiar categoría
+document.getElementById('categoriaSelect').addEventListener('change', cargarTemas);
+cargarTemas(); // Carga inicial
+
+function generarTest() {
+  const params = new URLSearchParams({
+    categoria: document.getElementById('categoriaSelect').value,
+    tema: document.getElementById('temaSelect').value,
+    num: document.getElementById('numPreguntas').value
+  });
+  
+  window.location.href = `test.html?${params.toString()}`;
+}
   </script>
 </body>
 </html>
