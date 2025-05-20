@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarTest(
     params.get('categoria'),  // Nuevo parámetro añadido
     params.get('tema'),
+     params.get('subtema'),
     parseInt(params.get('num')) // Convertir a número
   );
 });
