@@ -7,24 +7,28 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 });
 
-function cargarTest(categoria, tema, num) { // Recibir parámetros individuales
+function cargarTest(categoria, tema, subtema, num) {
   let preguntas = [];
   
   // 1. Filtrar preguntas
   if (tema === 'all') {
-    // Recorrer TODOS los temas de la categoría
+    // Todos los temas de la categoría
     Object.values(bancoPreguntas).forEach(temaObj => {
-      Object.values(temaObj).forEach(subtema => {
-        preguntas = preguntas.concat(subtema);
+      Object.values(temaObj).forEach(subtemaArray => {
+        preguntas = preguntas.concat(subtemaArray);
       });
     });
   } else {
-    // Buscar el tema específico (usar notación de corchetes para nombres con espacios)
-    const temaSeleccionado = bancoPreguntas[tema];
-    if (temaSeleccionado) {
-      Object.values(temaSeleccionado).forEach(subtema => {
-        preguntas = preguntas.concat(subtema);
+    const temaKey = tema.replace(/_/g, ' ');
+    if (subtema === 'all') {
+      // Todos los subtemas del tema
+      Object.values(bancoPreguntas[temaKey]).forEach(subtemaArray => {
+        preguntas = preguntas.concat(subtemaArray);
       });
+    } else {
+      // Subtema específico
+      const subtemaKey = subtema.replace(/_/g, ' ');
+      preguntas = bancoPreguntas[temaKey][subtemaKey] || [];
     }
   }
   
