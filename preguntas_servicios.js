@@ -1,6 +1,6 @@
 const bancoPreguntas = {
-  constitucion: {
-    estructura: [
+  "constitucion": {
+    "estructura": [
       {
         texto: "Desde el punto de vista formal, la Constitución Española de 1978 se considera:",
         opciones: ["Una ley orgánica que regula derechos fundamentales", "Una norma de carácter simbólico sin valor jurídico", "La norma suprema del ordenamiento jurídico español", "Un conjunto de normas dispersas con valor inferior a las leyes"],
@@ -56,7 +56,15 @@ const bancoPreguntas = {
     explicacion: "El Título VI regula el Poder Judicial."
   },
     ],
-    titulo1: [
+     "título preliminar": [
+      {
+        texto: "¿Qué artículo establece la soberanía nacional?",
+        opciones: ["Artículo 1", "Artículo 2", "Artículo 3", "Artículo 4"],
+        correcta: 0,
+        explicacion: "El Artículo 1.2 CE establece que la soberanía nacional reside en el pueblo español."
+      }
+    ],
+    "titulo i": [
       {
         texto: "¿Qué Título de la Constitución regula los derechos fundamentales?",
         opciones: ["Título Preliminar", "Título I", "Título II", "Título IV"],
