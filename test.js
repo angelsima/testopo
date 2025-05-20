@@ -1,120 +1,90 @@
-// Verificar si bancoPreguntas existe y tiene datos
-function verificarBancoPreguntas() {
-  if (!window.bancoPreguntas || typeof window.bancoPreguntas !== 'object') {
-    throw new Error('El banco de preguntas no se cargó correctamente');
-  }
-}
+// test.js
 
 function cargarTest(categoria, tema, subtema, num) {
-  try {
-    verificarBancoPreguntas();
-    
-    // Normalizar nombres (manejar tildes, mayúsculas y espacios)
-    const normalizar = (str) => {
-      if (!str) return '';
-      return str.toLowerCase()
-                .replace(/ /g, '_')
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "");
-    };
+  const quizForm = document.getElementById('quizForm');
+  quizForm.innerHTML = ''; // Limpiar cualquier contenido previo
 
-    let preguntas = [];
+  try {
+    if (typeof bancoPreguntas === 'undefined') {
+      throw new Error('No se cargaron las preguntas');
+    }
+
+    // Normaliza cadenas ("Título Preliminar" → "titulo_preliminar")
+    const normalizar = str =>
+      str
+        .toLowerCase()
+        .replace(/ /g, '_')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
     const temaNorm = normalizar(tema);
     const subtemaNorm = normalizar(subtema);
 
-    console.log('Filtros:', {categoria, tema, subtema, num});
-    console.log('Banco de preguntas:', window.bancoPreguntas);
+    let preguntas = [];
 
-    // Filtrar preguntas según selección
+    // Filtrado
     if (tema === 'all') {
       // Todos los temas de la categoría
-      Object.values(window.bancoPreguntas).forEach(temaObj => {
-        Object.values(temaObj).forEach(subtemaArray => {
-          preguntas = preguntas.concat(subtemaArray);
-        });
-      });
-    } else {
-      // Buscar por tema específico
-      const temaKey = Object.keys(window.bancoPreguntas).find(
-        key => normalizar(key) === temaNorm
+      Object.values(bancoPreguntas).forEach(temaObj =>
+        Object.values(temaObj).forEach(arr => (preguntas = preguntas.concat(arr)))
       );
-      
-      if (temaKey) {
-        if (subtema === 'all') {
-          // Todos los subtemas del tema
-          Object.values(window.bancoPreguntas[temaKey]).forEach(subtemaArray => {
-            preguntas = preguntas.concat(subtemaArray);
-          });
-        } else {
-          // Subtema específico
-          const subtemaKey = Object.keys(window.bancoPreguntas[temaKey]).find(
-            key => normalizar(key) === subtemaNorm
-          );
-          
-          if (subtemaKey) {
-            preguntas = window.bancoPreguntas[temaKey][subtemaKey] || [];
-          }
-        }
+    } else {
+      const temaObj = bancoPreguntas[temaNorm] || {};
+      if (subtema === 'all') {
+        // Todos los subtemas del tema
+        Object.values(temaObj).forEach(arr => (preguntas = preguntas.concat(arr)));
+      } else {
+        // Subtema específico
+        preguntas = temaObj[subtemaNorm] || [];
       }
     }
 
-    // Mostrar mensaje si no hay preguntas
     if (preguntas.length === 0) {
-      document.getElementById('quizForm').innerHTML = `
-        <p>No se encontraron preguntas para:</p>
-        <ul>
-          <li>Categoría: ${categoria}</li>
-          <li>Tema: ${tema}</li>
-          <li>Subtema: ${subtema}</li>
-        </ul>
-      `;
+      quizForm.innerHTML = '<p>No hay preguntas con esos filtros.</p>';
       return;
     }
 
-    // Mezclar y limitar preguntas
+    // Mezclar + recortar
     preguntas = shuffle(preguntas).slice(0, num);
 
-    // Generar HTML de las preguntas
-    const quizForm = document.getElementById('quizForm');
-    quizForm.innerHTML = ''; // Limpiar formulario
-    
-    preguntas.forEach((pregunta, index) => {
+    // Generar HTML
+    preguntas.forEach((p, i) => {
       const div = document.createElement('div');
       div.className = 'question';
       div.innerHTML = `
-        <p><strong>${pregunta.texto}</strong></p>
-        ${pregunta.opciones.map((opcion, i) => `
+        <p><strong>${p.texto}</strong></p>
+        ${p.opciones
+          .map(
+            (opt, j) => `
           <div class="options">
             <label>
-              <input type="radio" name="q${index}" value="${i}">
-              ${opcion}
+              <input type="radio" name="q${i}" value="${j}">
+              ${opt}
             </label>
           </div>
-        `).join('')}
-        <div class="explicacion">${pregunta.explicacion}</div>
+        `
+          )
+          .join('')}
+        <div class="explicacion">${p.explicacion}</div>
       `;
       quizForm.appendChild(div);
     });
-
-  } catch (error) {
-    console.error('Error en cargarTest:', error);
-    document.getElementById('quizForm').innerHTML = `
-      <p style="color: red;">Error al cargar el test: ${error.message}</p>
-      <p>Verifica la consola para más detalles.</p>
-    `;
+  } catch (err) {
+    console.error(err);
+    quizForm.innerHTML = `<p>Error al cargar el test: ${err.message}</p>`;
   }
 }
 
-// Función shuffle mejorada
-function shuffle(array) {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return newArray;
+  return arr;
 }
 
 function corregir() {
-  // Tu lógica de corrección actual
+  document.querySelectorAll('.explicacion').forEach(el =>
+    el.classList.add('show')
+  );
 }
