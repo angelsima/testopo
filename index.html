@@ -36,13 +36,13 @@
  // Datos de temas por categoría (podría ir en un JS aparte)
 const temasPorCategoria = {
     servicios: {
-      Constitucion: ["Estructura", "Título Preliminar", "Título I", "Título II", "Título III", "Título IV", "Título V", "Título VI", "Título VII", "Título VIII", "Título IX", "Título X"],
-      Estatuto: ["Organización Institucional", "Competencias"],
+      "Constitucion": ["Estructura", "Título Preliminar", "Título I", "Título II", "Título III", "Título IV", "Título V", "Título VI", "Título VII", "Título VIII", "Título IX", "Título X"],
+      "Estatuto": ["Organización Institucional", "Competencias"],
       "Prevención Riesgos": ["Señalización", "EPIs", "Primeros Auxilios"]
     },
     auxiliar: {
-      Constitucion: ["Derechos Fundamentales", "La Corona"],
-      Estatuto: ["Estatuto Básico", "Reformas"],
+      "Constitucion": ["Derechos Fundamentales", "La Corona"],
+      "Estatuto": ["Estatuto Básico", "Reformas"],
       "Procedimiento Administrativo": ["Fases", "Recursos", "Documentación"]
     },
     administrativo: {
@@ -61,7 +61,7 @@ function cargarTemas() {
 // Cargar temas principales
     Object.keys(temasPorCategoria[categoria]).forEach(tema => {
       const option = document.createElement('option');
-      option.value = tema.toLowerCase().replace(/ /g, '_');
+      option.value = tema; 
       option.textContent = tema;
       temaSelect.appendChild(option);
     });
@@ -75,16 +75,14 @@ function cargarSubtemas() {
     
     subtemaSelect.innerHTML = '<option value="all">Todos los subtemas</option>';
     
-    if (tema !== 'all') {
-      const temaKey = tema.replace(/_/g, ' ');
-      const subtemas = temasPorCategoria[categoria][temaKey];
-      
-      subtemas.forEach(subtema => {
-        const option = document.createElement('option');
-        option.value = subtema.toLowerCase().replace(/ /g, '_');
-        option.textContent = subtema;
-        subtemaSelect.appendChild(option);
-      });
+     if (tema !== 'all') {
+        const subtemas = temasPorCategoria[categoria][tema];
+        subtemas.forEach(subtema => {
+          const option = document.createElement('option');
+          option.value = subtema;     // <- sin normalizar
+          option.textContent = subtema;
+          subtemaSelect.appendChild(option);
+        });
     }
   }
 // Event listeners
@@ -99,6 +97,12 @@ function cargarSubtemas() {
   cargarTemas();
 
   function generarTest() {
+const normalizar = str =>
+        str.toLowerCase()
+           .replace(/ /g, '_')
+           .normalize('NFD')
+           .replace(/[\u0300-\u036f]/g, '');
+
     const params = new URLSearchParams({
       categoria: document.getElementById('categoriaSelect').value,
       tema: document.getElementById('temaSelect').value,
