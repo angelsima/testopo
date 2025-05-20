@@ -7,18 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 });
 
-function cargarTest(params) {
-  const tema = params.get('tema');
-  const preguntasCategoria = bancoPreguntas; // Accede al JS cargado dinámicamente
+function cargarTest(categoria, tema, num) { // Recibir parámetros individuales
+  let preguntas = [];
   
   let preguntas = [];
   
+ // 1. Filtrar por tema
   if (tema === 'all') {
-    Object.values(preguntasCategoria).forEach(subtema => {
-      Object.values(subtema).forEach(pregs => preguntas.push(...pregs));
+    // Recorrer todos los temas de la categoría
+    Object.values(bancoPreguntas).forEach(tema => {
+      Object.values(tema).forEach(subtema => {
+        preguntas = preguntas.concat(subtema);
+      });
     });
   } else {
-    Object.values(preguntasCategoria[tema]).forEach(pregs => preguntas.push(...pregs));
+    // Buscar preguntas del tema específico
+    const temaSeleccionado = bancoPreguntas[tema.toLowerCase()];
+    if (temaSeleccionado) {
+      Object.values(temaSeleccionado).forEach(subtema => {
+        preguntas = preguntas.concat(subtema);
+      });
+    }
   }
   
   // Mezclar y limitar preguntas
