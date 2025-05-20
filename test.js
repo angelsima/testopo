@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function cargarTest(categoria, tema, subtema, num) {
    try {
-    if (!bancoPreguntas) throw new Error('No se cargaron las preguntas');
+    if (!window.bancoPreguntas) throw new Error('No se cargaron las preguntas');
   // Normalizar nombres
   const normalizar = (str) => str.toLowerCase()
                                  .replace(/ /g, '_')
@@ -71,7 +71,8 @@ if (preguntas.length === 0) {
     }
   } catch (error) {
     console.error('Error:', error);
-    quizForm.innerHTML = `<p>Error al cargar el test: ${error.message}</p>`;
+    document.getElementById('quizForm').innerHTML = 
+      `<p>Error al cargar el test: ${error.message}</p>`;
   }
 }
 
