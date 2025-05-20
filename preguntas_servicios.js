@@ -56,7 +56,7 @@ const bancoPreguntas = {
     explicacion: "El Título VI regula el Poder Judicial."
   },
     ],
-     "título preliminar": [
+     "título_preliminar": [
       {
         texto: "¿Qué artículo establece la soberanía nacional?",
         opciones: ["Artículo 1", "Artículo 2", "Artículo 3", "Artículo 4"],
@@ -64,7 +64,7 @@ const bancoPreguntas = {
         explicacion: "El Artículo 1.2 CE establece que la soberanía nacional reside en el pueblo español."
       }
     ],
-    "titulo i": [
+    "titulo_i": [
       {
         texto: "¿Qué Título de la Constitución regula los derechos fundamentales?",
         opciones: ["Título Preliminar", "Título I", "Título II", "Título IV"],
@@ -78,7 +78,7 @@ const bancoPreguntas = {
     explicacion: "El artículo 1 establece que España es una Monarquía parlamentaria."
   },
     ],
-    titulo2: [
+    "titulo_ii": [
       {
         texto: "¿Qué artículo regula la figura del Rey?",
         opciones: ["Artículo 56", "Artículo 66", "Artículo 97", "Artículo 123"],
@@ -104,7 +104,7 @@ const bancoPreguntas = {
     explicacion: "El artículo 56 recoge la inviolabilidad del Rey."
   },
     ],
-     titulo3: [
+     "titulo_iii": [
     {
     texto: "¿Qué órganos forman las Cortes Generales?",
     opciones: ["Congreso y Consejo de Estado", "Senado y Tribunal Supremo", "Congreso y Senado", "Gobierno y Congreso"],
@@ -118,7 +118,7 @@ const bancoPreguntas = {
     explicacion: "Las Cortes Generales controlan al Gobierno, entre otras funciones."
   },
 ],
-     titulo4: [
+     "titulo_iv": [
        {
     texto: "¿Quién compone el Gobierno según el artículo 98?",
     opciones: ["El Rey y los Ministros", "El Presidente y el Congreso", "El Presidente, Vicepresidentes, Ministros y otros miembros que establezca la ley", "El Senado"],
@@ -132,7 +132,7 @@ const bancoPreguntas = {
     explicacion: "El artículo 103 menciona eficacia, jerarquía, descentralización, etc."
   },
        ],
-     titulo5: [
+     "titulo_v": [
        {
     texto: "¿Ante quién responde el Gobierno en su gestión política según el artículo 108?",
     opciones: ["El Rey", "El Senado", "El Congreso de los Diputados", "El Consejo de Ministros"],
@@ -140,7 +140,7 @@ const bancoPreguntas = {
     explicacion: "El artículo 108 indica que el Gobierno responde ante el Congreso."
   },
        ],
-     titulo6: [
+    "titulo_vi": [
       {
     texto: "¿Qué caracteriza a los jueces y magistrados según el artículo 117?",
     opciones: ["Electos por sufragio", "Nombrados por el Congreso", "Independientes e inamovibles", "Designados por el Rey"],
@@ -148,7 +148,7 @@ const bancoPreguntas = {
     explicacion: "El artículo 117 garantiza independencia, inamovilidad, etc."
   },
        ],
-     titulo7: [
+     "titulo_vii": [
      {
     texto: "¿Qué reconoce el Título VII sobre la economía?",
     opciones: ["La libertad de mercado y la planificación pública", "El monopolio estatal", "La economía socialista", "El sistema comunal de bienes"],
@@ -156,7 +156,7 @@ const bancoPreguntas = {
     explicacion: "El Título VII reconoce libertad de empresa y planificación económica pública."
   },
        ],
-     titulo8: [
+     "titulo_viii": [
      {
     texto: "¿Qué entidades territoriales regula el Título VIII de la Constitución Española?",
     opciones: ["Ministerios, provincias y regiones", "Municipios, provincias y comunidades autónomas", "Diputaciones, concejos y regiones", "Gobiernos locales y provinciales"],
@@ -176,7 +176,7 @@ const bancoPreguntas = {
     explicacion: "También establece la distribución de competencias entre el Estado y las Comunidades Autónomas."
   },
        ],
-     titulo9: [
+    "titulo_ix": [
      {
     texto: "¿Qué órgano regula el Título IX de la Constitución?",
     opciones: ["El Consejo de Estado", "El Tribunal Supremo", "El Tribunal Constitucional", "El Tribunal de Cuentas"],
@@ -190,7 +190,7 @@ const bancoPreguntas = {
     explicacion: "El Tribunal Constitucional garantiza que no se vulneren los principios y normas constitucionales."
   },
        ],
-     titulo10: [
+    "titulo_x": [
     {
     texto: "¿Qué regula el Título X de la Constitución Española de 1978?",
     opciones: ["El sistema electoral", "La estructura del Senado", "La reforma de la Constitución", "Las competencias municipales"],
