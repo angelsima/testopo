@@ -17,7 +17,11 @@
   <div id="score"></div>
   <button onclick="corregir()">Corregir</button>
 
-  <script src="preguntas.js"></script>
+ <script>
+  const params = new URLSearchParams(window.location.search);
+  const categoria = params.get('categoria');
+  document.write(`<script src="preguntas_${categoria}.js"><\/script>`);
+</script>
   <script src="test.js"></script>
 </body>
 </html>
