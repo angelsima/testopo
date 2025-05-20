@@ -35,10 +35,23 @@
   <script>
  // Datos de temas por categoría (podría ir en un JS aparte)
 const temasPorCategoria = {
-  servicios: ["Constitucion", "Estatuto", "Prevención Riesgos"],
-  auxiliar: ["Constitucion", "Estatuto", "Procedimiento Administrativo"],
-  administrativo: ["Constitucion", "Estatuto", "Contratación Pública", "Presupuestos"]
-};
+    servicios: {
+      Constitucion: ["Título Preliminar", "Título I", "Título II", "Título III",, "Título IV", "Título V", "Título VI", "Título VII", "Título VIII", "Título IX", "Título X"],
+      Estatuto: ["Organización Institucional", "Competencias"],
+      "Prevención Riesgos": ["Señalización", "EPIs", "Primeros Auxilios"]
+    },
+    auxiliar: {
+      Constitucion: ["Derechos Fundamentales", "La Corona"],
+      Estatuto: ["Estatuto Básico", "Reformas"],
+      "Procedimiento Administrativo": ["Fases", "Recursos", "Documentación"]
+    },
+    administrativo: {
+      Constitucion: ["Tribunal Constitucional", "Reforma Constitucional"],
+      Estatuto: ["Asamblea Regional", "Consejo de Gobierno"],
+      "Contratación Pública": ["Tipos de Contratos", "Procedimientos"],
+      Presupuestos: ["Elaboración", "Ejecución", "Control"]
+    }
+  };
     
 function cargarTemas() {
   const categoria = document.getElementById('categoriaSelect').value;
