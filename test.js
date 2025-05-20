@@ -8,7 +8,7 @@ function cargarTest(categoria, tema, subtema, num) {
   quizForm.innerHTML = ''; // Limpiar cualquier contenido previo
 
   try {
-    if (typeof bancoPreguntas === 'undefined') {
+    if (typeof bancoServicios === 'undefined') {
       throw new Error('No se cargaron las preguntas');
     }
 
@@ -27,11 +27,11 @@ function cargarTest(categoria, tema, subtema, num) {
 
     // Filtrado de preguntas
     if (tema === 'all') {
-      Object.values(bancoPreguntas).forEach(temaObj =>
+      Object.values(bancoServicios).forEach(temaObj =>
         Object.values(temaObj).forEach(arr => (preguntas = preguntas.concat(arr)))
       );
     } else {
-      const temaObj = bancoPreguntas[temaNorm] || {};
+      const temaObj = bancoServicios[temaNorm] || {};
       if (subtema === 'all') {
         Object.values(temaObj).forEach(arr => (preguntas = preguntas.concat(arr)));
       } else {
