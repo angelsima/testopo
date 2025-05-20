@@ -18,9 +18,11 @@
   <button onclick="corregir()">Corregir</button>
 
  <script>
-   const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   const categoria = urlParams.get('categoria');
-  document.write(`<script src="preguntas_${categoria}.js"><\/script>`);
+  const script = document.createElement('script');
+  script.src = `preguntas_${categoria}.js`;
+  document.head.appendChild(script);
 </script>
   <script src="test.js"></script>
 </body>
