@@ -8,13 +8,37 @@
     .question { margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
     .explicacion { display: none; margin-top: 10px; padding: 10px; background: #e9f5ff; border-radius: 5px; }
     .show { display: block; }
+.correct {
+  background-color: #d4edda; /* verde suave */
+}
+.incorrect {
+  background-color: #f8d7da; /* rojo suave */
+}
+#quizForm {
+  margin-bottom: 20px;
+}
+
+#score {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+button {
+  display: inline-block;
+  margin: 10px;
+}
   </style>
 </head>
 <body>
   <h1 id="testTitulo"></h1>
   <form id="quizForm"></form>
   <div id="score"></div>
+  <div id="buttonContainer" style="text-align: center;">
   <button onclick="corregir()">Corregir</button>
+  <button onclick="volverInicio()">Volver al inicio</button>
+</div>
+
 
   <script>
     // 1) Leemos la categoría
@@ -39,6 +63,10 @@
       document.head.appendChild(testScript);
     };
     document.head.appendChild(bancoScript);
+function volverInicio() {
+    // Vuelve a index.html sin parámetros
+    window.location.href = 'index.html';
+  }
   </script>
 </body>
 </html>
