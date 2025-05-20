@@ -40,33 +40,10 @@ button {
 </div>
 
 
-  <script>
-    // 1) Leemos la categoría
-    const params = new URLSearchParams(window.location.search);
-    const categoria = params.get('categoria');
-    // 2) Insertamos el script de preguntas
-    const bancoScript = document.createElement('script');
-    bancoScript.src = `preguntas_${categoria}.js`;
-    bancoScript.onload = () => {
-      // 3) Cuando el banco está listo, insertamos test.js
-      const testScript = document.createElement('script');
-      testScript.src = 'test.js';
-      testScript.onload = () => {
-        // 4) Y cuando test.js esté listo, arrancamos la carga de preguntas:
-        cargarTest(
-          categoria,
-          params.get('tema'),
-          params.get('subtema'),
-          parseInt(params.get('num'), 10)
-        );
-      };
-      document.head.appendChild(testScript);
-    };
-    document.head.appendChild(bancoScript);
-function volverInicio() {
+  <script src="test.js" type="module"></script>
+<script>function volverInicio() {
     // Vuelve a index.html sin parámetros
     window.location.href = 'index.html';
-  }
-  </script>
+  }</script>
 </body>
 </html>
