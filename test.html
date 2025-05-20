@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Test | CARM</title>
   <style>
-    /* Mantenemos los estilos originales mejorados */
     body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background: #f9f9f9; }
     .question { margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
     .explicacion { display: none; margin-top: 10px; padding: 10px; background: #e9f5ff; border-radius: 5px; }
@@ -15,39 +14,31 @@
   <h1 id="testTitulo"></h1>
   <form id="quizForm"></form>
   <div id="score"></div>
-  <button onclick="corregir()">Corregir Test</button>
+  <button onclick="corregir()">Corregir</button>
 
   <script>
-    // Cargar primero el archivo de preguntas
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoria = urlParams.get('categoria');
-    
-    function iniciarTest() {
-      // Esta función se llamará después de cargar las preguntas
-      const params = new URLSearchParams(window.location.search);
-      if (typeof cargarTest === 'function') {
+    // 1) Leemos la categoría
+    const params = new URLSearchParams(window.location.search);
+    const categoria = params.get('categoria');
+    // 2) Insertamos el script de preguntas
+    const bancoScript = document.createElement('script');
+    bancoScript.src = `preguntas_${categoria}.js`;
+    bancoScript.onload = () => {
+      // 3) Cuando el banco está listo, insertamos test.js
+      const testScript = document.createElement('script');
+      testScript.src = 'test.js';
+      testScript.onload = () => {
+        // 4) Y cuando test.js esté listo, arrancamos la carga de preguntas:
         cargarTest(
-          params.get('categoria'),
+          categoria,
           params.get('tema'),
           params.get('subtema'),
-          parseInt(params.get('num'))
+          parseInt(params.get('num'), 10)
         );
-      } else {
-        console.error('La función cargarTest no está definida');
-      }
-    }
-
-    // Crear y cargar el script de preguntas
-    const script = document.createElement('script');
-    script.src = `preguntas_${categoria}.js`;
-    script.onload = iniciarTest;
-    script.onerror = () => {
-      document.getElementById('quizForm').innerHTML = 
-        '<p>Error: No se pudo cargar el archivo de preguntas</p>';
+      };
+      document.head.appendChild(testScript);
     };
-    document.head.appendChild(script);
+    document.head.appendChild(bancoScript);
   </script>
-  
-  <script src="test.js"></script>
 </body>
 </html>
