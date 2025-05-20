@@ -1,5 +1,8 @@
 // test.js
 
+/**
+ * Carga el test desde el banco de preguntas y lo pinta en el formulario.
+ */
 function cargarTest(categoria, tema, subtema, num) {
   const quizForm = document.getElementById('quizForm');
   quizForm.innerHTML = ''; // Limpiar cualquier contenido previo
@@ -22,19 +25,16 @@ function cargarTest(categoria, tema, subtema, num) {
 
     let preguntas = [];
 
-    // Filtrado
+    // Filtrado de preguntas
     if (tema === 'all') {
-      // Todos los temas de la categoría
       Object.values(bancoPreguntas).forEach(temaObj =>
         Object.values(temaObj).forEach(arr => (preguntas = preguntas.concat(arr)))
       );
     } else {
       const temaObj = bancoPreguntas[temaNorm] || {};
       if (subtema === 'all') {
-        // Todos los subtemas del tema
         Object.values(temaObj).forEach(arr => (preguntas = preguntas.concat(arr)));
       } else {
-        // Subtema específico
         preguntas = temaObj[subtemaNorm] || [];
       }
     }
@@ -44,10 +44,13 @@ function cargarTest(categoria, tema, subtema, num) {
       return;
     }
 
-    // Mezclar + recortar
+    // Mezclar y recortar
     preguntas = shuffle(preguntas).slice(0, num);
 
-    // Generar HTML
+    // Guardamos para la corrección
+    window.currentPreguntas = preguntas;
+
+    // Generar HTML de cada pregunta
     preguntas.forEach((p, i) => {
       const div = document.createElement('div');
       div.className = 'question';
@@ -75,6 +78,9 @@ function cargarTest(categoria, tema, subtema, num) {
   }
 }
 
+/**
+ * Fisher–Yates shuffle.
+ */
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -83,8 +89,52 @@ function shuffle(arr) {
   return arr;
 }
 
+/**
+ * Corrige el test: colorea respuestas, muestra explicaciones y calcula la puntuación.
+ */
 function corregir() {
-  document.querySelectorAll('.explicacion').forEach(el =>
-    el.classList.add('show')
-  );
+  const preguntas = window.currentPreguntas || [];
+  const total = preguntas.length;
+  let aciertos = 0;
+  let errores = 0;
+  let noContestadas = 0;
+
+  const questionDivs = document.querySelectorAll('.question');
+
+  preguntas.forEach((pregunta, i) => {
+    const div = questionDivs[i];
+    const labels = div.querySelectorAll('label');
+    const inputs = div.querySelectorAll('input[type="radio"]');
+
+    // Determinar selección del usuario
+    let seleccionada = null;
+    inputs.forEach(input => {
+      if (input.checked) seleccionada = parseInt(input.value, 10);
+    });
+
+    // Mostrar explicación
+    div.querySelector('.explicacion').classList.add('show');
+
+    // Marcar y contar
+    if (seleccionada === null) {
+      noContestadas++;
+      // opcional: podrías marcar el div con otra clase
+    } else if (seleccionada === pregunta.correcta) {
+      aciertos++;
+      labels[seleccionada].classList.add('correct');
+    } else {
+      errores++;
+      labels[seleccionada].classList.add('incorrect');
+      // además marcamos la respuesta correcta en verde
+      labels[pregunta.correcta].classList.add('correct');
+    }
+  });
+
+  // Mostrar el resumen
+  const scoreDiv = document.getElementById('score');
+  scoreDiv.innerHTML = `
+    <p><strong>Aciertos:</strong> ${aciertos}/${total}</p>
+    <p><strong>Errores:</strong> ${errores}/${total}</p>
+    <p><strong>No contestadas:</strong> ${noContestadas}/${total}</p>
+  `;
 }
