@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Repaso Oposiciones CARM</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
+    .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+    select, input { padding: 8px; margin: 5px; }
+    button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Preparación Oposiciones CARM</h1>
+  
+  <div class="selector">
+    <h2>Selecciona tu test:</h2>
+    <select id="temaSelect">
+      <option value="constitucion">Constitución Española</option>
+      <option value="estatuto_murcia">Estatuto de Autonomía de Murcia</option>
+    </select>
+    
+    <select id="subtemaSelect">
+      <option value="all">Todos los temas</option>
+      <option value="titulo1">Título I: Derechos Fundamentales</option>
+      <option value="titulo2">Título II: La Corona</option>
+    </select>
+    
+    <input type="number" id="numPreguntas" min="5" max="50" value="10">
+    <button onclick="generarTest()">Comenzar Test</button>
+  </div>
+
+  <script>
+    function generarTest() {
+      const tema = document.getElementById('temaSelect').value;
+      const subtema = document.getElementById('subtemaSelect').value;
+      const num = document.getElementById('numPreguntas').value;
+      window.location.href = `test.html?tema=${tema}&subtema=${subtema}&num=${num}`;
+    }
+  </script>
+</body>
+</html>
