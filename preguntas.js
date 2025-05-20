@@ -1,69 +1,95 @@
-const bancoServicios = {
-  "constitucion": {
-    "estructura": [
-      {
-        texto: "Desde el punto de vista formal, la Constitución Española de 1978 se considera:",
+{
+  "preguntas": [
+     {
+	texto: "Desde el punto de vista formal, la Constitución Española de 1978 se considera:",
         opciones: ["Una ley orgánica que regula derechos fundamentales", "Una norma de carácter simbólico sin valor jurídico", "La norma suprema del ordenamiento jurídico español", "Un conjunto de normas dispersas con valor inferior a las leyes"],
         correcta: 2,
         explicacion: "La norma suprema del ordenamiento jurídico español."
+	"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura"
       },
      {
         texto: "¿Cuál de los siguientes Títulos de la Constitución regula los derechos y deberes fundamentales?",
         opciones: ["Título Preliminar", "Título I", "Título II", "Título IV"],
         correcta: 1,
         explicacion: "Título I. De los derechos y deberes fundamentales."
+	"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura"
       },
   {
     texto: "¿Qué parte de la Constitución Española comprende el Título Preliminar y el Título I?",
     opciones: ["Parte ejecutiva", "Parte legislativa", "Parte orgánica", "Parte dogmática"],
     correcta: 3,
     explicacion: "La parte dogmática comprende el Título Preliminar y el Título I."
+	"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura"
   },
   {
     texto: "¿Qué recoge el Título Preliminar de la Constitución Española de 1978?",
     opciones: ["La organización territorial del Estado", "Los principios y valores del Estado", "El procedimiento de reforma constitucional", "La estructura de los tribunales"],
     correcta: 1,
     explicacion: "El Título Preliminar contiene los principios y valores fundamentales del Estado."
+"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura"
   },
       {
     texto: "¿Qué parte de la Constitución comprende los Títulos II a X?",
     opciones: ["Parte ejecutiva", "Parte orgánica", "Parte dogmática", "Parte institucional"],
     correcta: 1,
     explicacion: "La parte orgánica abarca los Títulos II a X."
+"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura"
   },
        {
     texto: "¿Qué establece la parte orgánica de la Constitución?",
     opciones: ["La inviolabilidad del Rey", "La estructura del poder judicial", "La división de poderes y organización territorial", "Los derechos laborales"],
     correcta: 2,
     explicacion: "La parte orgánica regula la división de poderes y la organización territorial del Estado."
-  },
+"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura" 
+ },
       {
     texto: "¿Qué título regula el Gobierno y la Administración?",
     opciones: ["Título II", "Título IV", "Título V", "Título VI"],
     correcta: 1,
     explicacion: "El Título IV regula el Gobierno y la Administración."
-  },
+"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura" 
+ },
       {
     texto: "¿Cuál es el contenido principal del Título V?",
     opciones: ["Relaciones entre Gobierno y Cortes Generales", "Derechos sociales", "Organización económica", "Tribunal Constitucional"],
     correcta: 0,
     explicacion: "El Título V trata sobre la relación Gobierno-Cortes."
-  },
+"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura" 
+ },
       {
     texto: "¿Qué regula el Título VI de la Constitución?",
     opciones: ["Derechos fundamentales", "El Poder Judicial", "La Corona", "La Hacienda Pública"],
     correcta: 1,
     explicacion: "El Título VI regula el Poder Judicial."
-  },
-    ],
-     "título_preliminar": [
+"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "estructura" 
+ },     
       {
         texto: "¿Qué artículo establece la soberanía nacional?",
         opciones: ["Artículo 1", "Artículo 2", "Artículo 3", "Artículo 4"],
         correcta: 0,
         explicacion: "El Artículo 1.2 CE establece que la soberanía nacional reside en el pueblo español."
+"tags": ["servicios", "auxiliar", "administrativo"],
+      	"tema": "constitucion",
+      	"subtema": "titulo_preliminar"
       }
-    ],
     "titulo_i": [
       {
         texto: "¿Qué Título de la Constitución regula los derechos fundamentales?",
