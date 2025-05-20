@@ -9,7 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function cargarTest(categoria, tema, subtema, num) {
+   try {
+    if (!bancoPreguntas) throw new Error('No se cargaron las preguntas');
+  // Normalizar nombres
+  const normalizar = (str) => str.toLowerCase()
+                                 .replace(/ /g, '_')
+                                 .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  
   let preguntas = [];
+  const temaNorm = normalizar(tema);
+  const subtemaNorm = normalizar(subtema);
+
   
   // 1. Filtrar preguntas
   if (tema === 'all') {
@@ -55,10 +65,22 @@ function cargarTest(categoria, tema, subtema, num) {
     `;
     quizForm.appendChild(div);
   });
+if (preguntas.length === 0) {
+      quizForm.innerHTML = '<p>No se encontraron preguntas con los filtros seleccionados</p>';
+      return;
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    quizForm.innerHTML = `<p>Error al cargar el test: ${error.message}</p>`;
+  }
 }
 
 function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function corregir() {
