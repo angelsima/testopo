@@ -30,4 +30,15 @@ const bancoPreguntas = {
       // Más preguntas...
     ]
   }
+},
+  prevencion_riesgos: {
+    basicos: [
+      {
+        texto: "¿Qué color identifica las señales de prohibición?",
+        opciones: ["Rojo", "Amarillo", "Azul", "Verde"],
+        correcta: 0,
+        explicacion: "Las señales de prohibición son redondas con fondo blanco y borde rojo."
+      }
+    ]
+  }
 };
