@@ -3,16 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarTest(params.get('tema'), params.get('subtema'), params.get('num'));
 });
 
-function cargarTest(tema, subtema, num) {
+function cargarTest(params) {
+  const tema = params.get('tema');
+  const preguntasCategoria = bancoPreguntas; // Accede al JS cargado dinámicamente
+  
   let preguntas = [];
   
-  // Filtrar preguntas según selección
-  if (subtema === 'all') {
-    Object.values(bancoPreguntas[tema]).forEach(subtema => {
-      preguntas = preguntas.concat(subtema);
+  if (tema === 'all') {
+    Object.values(preguntasCategoria).forEach(subtema => {
+      Object.values(subtema).forEach(pregs => preguntas.push(...pregs));
     });
   } else {
-    preguntas = bancoPreguntas[tema][subtema];
+    Object.values(preguntasCategoria[tema]).forEach(pregs => preguntas.push(...pregs));
   }
   
   // Mezclar y limitar preguntas
