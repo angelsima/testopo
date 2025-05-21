@@ -67,6 +67,9 @@ function shuffle(array) {
 
 function corregir() {
   let correctas = 0;
+  let noContestadas = 0;
+  let incorrectas = 0;
+
   const totalPreguntas = document.querySelectorAll('.question').length;
 
   document.querySelectorAll('.question').forEach((questionDiv) => {
@@ -75,31 +78,46 @@ function corregir() {
     const correcta = parseInt(explicacion.dataset.correcta);
 
     let respuestaSeleccionada = -1;
+
     inputs.forEach((input, i) => {
       if (input.checked) respuestaSeleccionada = i;
+    });
+
+    inputs.forEach((input, i) => {
       const label = input.parentElement;
       label.classList.remove('correct', 'incorrect');
-      
+
       if (i === correcta) {
         label.classList.add('correct');
-      } else if (i === respuestaSeleccionada) {
+      } else if (i === respuestaSeleccionada && i !== correcta) {
         label.classList.add('incorrect');
       }
     });
 
     explicacion.style.display = 'block';
-    if (respuestaSeleccionada === correcta) correctas++;
+
+    if (respuestaSeleccionada === -1) {
+      noContestadas++;
+    } else if (respuestaSeleccionada === correcta) {
+      correctas++;
+    } else {
+      incorrectas++;
+    }
   });
 
   const porcentaje = ((correctas / totalPreguntas) * 100).toFixed(1);
+
   document.getElementById('score').innerHTML = `
-    <h3>Resultados:</h3>
-    <p>✅ Correctas: ${correctas}</p>
-    <p>❌ Incorrectas: ${totalPreguntas - correctas}</p>
-    <p>📊 Porcentaje: ${porcentaje}%</p>
+    <h3 style="text-align:center">Resultados:</h3>
+    <p style="text-align:center">✅ Correctas: ${correctas}/${totalPreguntas}</p>
+    <p style="text-align:center">❌ Incorrectas: ${incorrectas}/${totalPreguntas}</p>
+    <p style="text-align:center">⚪ No contestadas: ${noContestadas}/${totalPreguntas}</p>
+    <p style="text-align:center">📊 Porcentaje: ${porcentaje}%</p>
   `;
 }
+
 window.corregir = corregir;
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarPreguntas();
