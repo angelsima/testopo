@@ -39,6 +39,7 @@ function mostrarPreguntas(preguntasMostrar) {
     const div = document.createElement('div');
     div.className = 'question';
     div.innerHTML = `
+    <div class="metadata">#${pregunta.tema} #${pregunta.subtema}</div>
       <p><strong>${pregunta.texto}</strong></p>
       ${pregunta.opciones.map((opcion, i) => `
         <div class="options">
