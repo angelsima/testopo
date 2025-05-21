@@ -240,14 +240,48 @@ window.preguntasServicios = [
 	       tema: "constitucion",
     subtema: "titulo_x"
   },
-       {
-    texto: "¿Cuántas veces ha sido modificada la Constitución Española de 1978 hasta la actualidad?",
-    opciones: ["Dos", "Tres", "Cinco", "Ninguna"],
-    correcta: 1,
-    explicacion: "Se ha modificado en tres ocasiones: 1992 (art. 13.2), 2011 (art. 135) y 2024 (art. 49).",
-	       tema: "constitucion",
+	{
+  texto: "¿Cuántos artículos de la Constitución Española de 1978 han sido modificados hasta ahora?",
+  opciones: ["Uno", "Dos", "Tres", "Cuatro"],
+  correcta: 2,
+  explicacion: "La Constitución ha sido modificada en tres ocasiones: en 1992 (art. 13.2), en 2011 (art. 135) y en 2024 (art. 49).",
+  tema: "constitucion",
     subtema: "titulo_x"
-  }, 
+},
+{
+  texto: "¿Qué artículo fue modificado en el año 2011 para garantizar la estabilidad presupuestaria?",
+  opciones: ["El artículo 13.2", "El artículo 49", "El artículo 135", "El artículo 155"],
+  correcta: 2,
+  explicacion: "En 2011 se modificó el artículo 135 para incluir el principio de estabilidad presupuestaria.",
+  tema: "constitucion",
+    subtema: "titulo_x"
+},
+	{
+  texto: "¿Qué permitió la reforma del artículo 13.2 de la Constitución Española en 1992?",
+  opciones: [
+    "El derecho de los extranjeros a formar partidos políticos",
+    "La nacionalización automática de residentes extranjeros",
+    "El sufragio pasivo de ciudadanos extranjeros en elecciones municipales",
+    "La participación de extranjeros en elecciones generales"
+  ],
+  correcta: 2,
+  explicacion: "La reforma del artículo 13.2 en 1992 permitió que ciudadanos extranjeros pudieran ser elegidos (sufragio pasivo) en elecciones municipales, en base a criterios de reciprocidad.",
+  tema: "constitucion",
+ subtema: "titulo_x"
+},
+{
+  texto: "¿Qué artículo fue modificado más recientemente y cuál fue su objetivo?",
+  opciones: [
+    "El artículo 13.2, para permitir el voto de los extranjeros",
+    "El artículo 49, para proteger mejor a las personas con discapacidad",
+    "El artículo 135, para asegurar la independencia judicial",
+    "El artículo 49, para reforzar la estructura autonómica"
+  ],
+  correcta: 1,
+  explicacion: "La reforma más reciente fue en 2024: se modificó el artículo 49 para reforzar la protección de las personas con discapacidad.",
+  tema: "constitucion",
+    subtema: "titulo_x"
+},
 	// ESTATUTO AUTONOMÍA MURCIA
 	{ 
         texto: "¿En qué año se aprobó el Estatuto de Autonomía de Murcia?",
