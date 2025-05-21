@@ -9,16 +9,14 @@ function normalizar(str) {
 
 async function cargarPreguntas() {
   try {
-    // Aquí debes cargar tu archivo preguntas_servicios.js
-    // que debe tener una variable: const preguntas = [...];
-    preguntas = window.preguntasServicios || [];
-    
+    const snapshot = await window.db.collection("preguntas").get();
+    preguntas = snapshot.docs.map(doc => doc.data());
     if (preguntas.length === 0) {
-      throw new Error('No se encontraron preguntas');
+      throw new Error('No se encontraron preguntas en Firestore');
     }
   } catch (error) {
-    console.error('Error:', error);
-    document.getElementById('quizForm').innerHTML = 
+    console.error('Error cargando preguntas desde Firestore:', error);
+    document.getElementById('quizForm').innerHTML =
       '<p>Error al cargar las preguntas</p>';
   }
 }
