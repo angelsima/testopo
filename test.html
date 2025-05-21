@@ -5,9 +5,14 @@
   <title>Test | CARM</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background: #f9f9f9; }
-    .question { margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+   
+    .question { margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; position: relative;
+  padding-top: 25px; /* para que no se solape el contenido */ }
+   
     .explicacion { display: none; margin-top: 10px; padding: 10px; background: #e9f5ff; border-radius: 5px; }
+  
     .show { display: block; }
+    
 .correct {
   background-color: #d4edda; /* verde suave */
 }
@@ -28,6 +33,14 @@ button {
   display: inline-block;
   margin: 10px;
 }
+    .metadata {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 0.7em;
+  color: #666;
+}
+
   </style>
 </head>
 <body>
