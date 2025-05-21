@@ -113,15 +113,15 @@ function corregir() {
 
   // Texto extra para mostrar penalización junto a correctas
   let textoPenalizacion = penalizacion > 0
-    ? ` <span style="color:red">-${penalizacion}</span> =  <span style="color:green">${correctasAjustadas}</span>/${totalPreguntas}`
+    ? ` <span style="color:red">-${penalizacion}</span> `
     : "";
 
   document.getElementById('score').innerHTML = `
     <h3 style="text-align:center">Resultados:</h3>
-    <p style="text-align:center">✅ Correctas: ${correctas}/${totalPreguntas}${textoPenalizacion}</p>
-    <p style="text-align:center">❌ Incorrectas: ${incorrectas}/${totalPreguntas} (${incorrectas} errores = <span style="color:red">-${penalizacion}</span>)</p>
-    <p style="text-align:center">⚪ No contestadas: ${noContestadas}/${totalPreguntas}</p>
-    <p style="text-align:center">📊 Porcentaje: ${porcentaje}%</p>
+    <p style="text-align:center">✅ = ${correctas}/${totalPreguntas}${textoPenalizacion}</p>
+    <p style="text-align:center">❌ = ${incorrectas}/${totalPreguntas} (${incorrectas} errores = <span style="color:red">-${penalizacion}</span>)</p>
+    <p style="text-align:center">⚪ = ${noContestadas}/${totalPreguntas}</p>
+    <p style="text-align:center">NOTA FINAL: <span style="color:green">${correctasAjustadas}</span>/${totalPreguntas} - ${porcentaje}%</p>
   `;
 }
 
