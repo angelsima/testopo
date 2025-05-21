@@ -10,7 +10,10 @@ function normalizar(str) {
 async function cargarPreguntas() {
   try {
     const snapshot = await window.db.collection("preguntas").get();
-    preguntas = snapshot.docs.map(doc => doc.data());
+    preguntas = snapshot.docs.map(doc => ({
++      id: doc.id,       // <-- aquí
++      ...doc.data()
++    }));    
     if (preguntas.length === 0) {
       throw new Error('No se encontraron preguntas en Firestore');
     }
@@ -116,13 +119,22 @@ for (let index = 0; index < totalPreguntas; index++) {
  // Aquí se actualiza en Firebase el intento
     if (respuestaSeleccionada !== -1) {
       const preguntaId = preguntas[index].id;
-      const acertada = (respuestaSeleccionada === correcta);
-       // Actualizamos Firestore
-      await window.db.collection("preguntas").doc(preguntaId).update({
-        vecesIntentada: firebase.firestore.FieldValue.increment(1),
-        vecesAcertada: acertada ? firebase.firestore.FieldValue.increment(1) : firebase.firestore.FieldValue.increment(0),
-        ultimaFecha: new Date()
-      });
+      const acertada = respuestaSeleccionada === correcta;
+      try {
+        await window.db
+          .collection("preguntas")
+          .doc(preguntaId)
+          .update({
+            vecesIntentada: firebase.firestore.FieldValue.increment(1),
+            vecesAcertada: acertada
+              ? firebase.firestore.FieldValue.increment(1)
+              : firebase.firestore.FieldValue.increment(0),
+            ultimaRespuesta: new Date()
+          });
+        console.log(`✅ Actualizado pregunta ${preguntaId}`);
+      } catch (e) {
+        console.error(`❌ Error actualizando pregunta ${preguntaId}:`, e);
+      }
     }
     if (respuestaSeleccionada === -1) {
       noContestadas++;
