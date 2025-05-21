@@ -118,8 +118,8 @@ function corregir() {
 
   document.getElementById('score').innerHTML = `
     <h3 style="text-align:center">Resultados:</h3>
-    <p style="text-align:center">✅ Correctas: ${correctas}/${totalPreguntas}${textoPenalizacion}</p>
-    <p style="text-align:center">❌ Incorrectas: ${incorrectas}/${totalPreguntas} (${Math.floor(incorrectas/3)} error(es) = -${penalizacion})</p>
+    <p style="text-align:center">✅ Correctas: ${correctas}/${totalPreguntas}${textoPenalizacion}/${totalPreguntas}</p>
+    <p style="text-align:center">❌ Incorrectas: ${incorrectas}/${totalPreguntas} (${incorrectas} errores = -${penalizacion})</p>
     <p style="text-align:center">⚪ No contestadas: ${noContestadas}/${totalPreguntas}</p>
     <p style="text-align:center">📊 Porcentaje: ${porcentaje}%</p>
   `;
