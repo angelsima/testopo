@@ -5,9 +5,8 @@
   <title>Repaso Oposiciones CARM</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
-    .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px;
- text-align: center; /* Centra contenido dentro del bloque */ }
-    select, input { padding: 8px; margin: 5px; }
+    .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+    select, input { padding: 8px; margin: 5px; width: 200px; }
     button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
   </style>
 </head>
@@ -16,110 +15,78 @@
   
   <div class="selector">
     <h2>Selecciona tu test:</h2>
-
-  <select id="temaSelect">
-    <!-- Opciones se cargarán dinámicamente según categoría -->
-  </select>
+    <select id="temaSelect">
+      <option value="all">Todos los temas</option>
+    </select>
     <select id="subtemaSelect">
-    <!-- Opciones se cargarán dinámicamente según categoría -->
-  </select>
-       
+      <option value="all">Todos los subtemas</option>
+    </select>
     <input type="number" id="numPreguntas" min="5" max="100" value="10" placeholder="Nº de preguntas">
     <button onclick="generarTest()">Comenzar Test</button>
   </div>
 
   <script>
- // Datos de temas por categoría (podría ir en un JS aparte)
-const temasPorCategoria = {
-    servicios: {
-      "Constitucion": ["Estructura", "Título Preliminar", "Título I", "Título II", "Título III", "Título IV", "Título V", "Título VI", "Título VII", "Título VIII", "Título IX", "Título X"],
-      "Estatuto": ["Organización Institucional", "Competencias"],
-      "Prevención Riesgos": ["Señalización", "EPIs", "Primeros Auxilios"]
-    }
-    }
+  // Datos de temas y subtemas
+  const temasYSubtemas = {
+    "Constitucion": [
+      "Estructura", 
+      "Título Preliminar",
+      "Título I",
+      "Título II",
+      "Título III",
+      "Título IV",
+      "Título V",
+      "Título VI",
+      "Título VII",
+      "Título VIII",
+      "Título IX",
+      "Título X"
+    ],
+    "Estatuto": [
+      "Organización Institucional",
+      "Competencias"
+    ],
+    "Prevención Riesgos": [
+      "Señalización",
+      "EPIs",
+      "Primeros Auxilios"
+    ]
   };
-    
-function cargarTemas() {
-  const categoria = document.getElementById('categoriaSelect').value;
-  const temaSelect = document.getElementById('temaSelect');
-  temaSelect.innerHTML = '<option value="all">Todos los temas</option>';
-  
-// Si se elige "all", mostrar temas combinados de todas las categorías
-  let temas = {};
 
-  if (categoria === 'all') {
-    Object.values(temasPorCategoria).forEach(cat => {
-      Object.entries(cat).forEach(([tema, subtemas]) => {
-        temas[tema] = subtemas;
-      });
+  // Cargar temas al iniciar
+  function cargarTemas() {
+    const temaSelect = document.getElementById('temaSelect');
+    Object.keys(temasYSubtemas).forEach(tema => {
+      const option = document.createElement('option');
+      option.value = tema;
+      option.textContent = tema;
+      temaSelect.appendChild(option);
     });
-  } else {
-    temas = temasPorCategoria[categoria];
+    cargarSubtemas();
   }
 
-  // Rellenar select de temas
-  Object.keys(temas).forEach(tema => {
-    const option = document.createElement('option');
-    option.value = tema;
-    option.textContent = tema;
-    temaSelect.appendChild(option);
-  });
+  // Cargar subtemas según tema seleccionado
+  function cargarSubtemas() {
+    const tema = document.getElementById('temaSelect').value;
+    const subtemaSelect = document.getElementById('subtemaSelect');
+    subtemaSelect.innerHTML = '<option value="all">Todos los subtemas</option>';
     
-    cargarSubtemas(); // Cargar subtemas iniciales
-  }
-
-function cargarSubtemas() {
-  const categoria = document.getElementById('categoriaSelect').value;
-  const tema = document.getElementById('temaSelect').value;
-  const subtemaSelect = document.getElementById('subtemaSelect');
-  subtemaSelect.innerHTML = '<option value="all">Todos los subtemas</option>';
-
-  let subtemas = [];
-
-  if (categoria === 'all') {
-    Object.values(temasPorCategoria).forEach(cat => {
-      if (tema === 'all') {
-        Object.values(cat).forEach(subs => subtemas.push(...subs));
-      } else if (cat[tema]) {
-        subtemas.push(...cat[tema]);
-      }
-    });
-  } else {
     if (tema !== 'all') {
-      subtemas = temasPorCategoria[categoria][tema] || [];
+      temasYSubtemas[tema].forEach(subtema => {
+        const option = document.createElement('option');
+        option.value = subtema;
+        option.textContent = subtema;
+        subtemaSelect.appendChild(option);
+      });
     }
   }
 
-  // Eliminar duplicados
-  const subtemasUnicos = [...new Set(subtemas)];
+  // Event listeners
+  document.getElementById('temaSelect').addEventListener('change', cargarSubtemas);
 
-  subtemasUnicos.forEach(subtema => {
-    const option = document.createElement('option');
-    option.value = subtema;
-    option.textContent = subtema;
-    subtemaSelect.appendChild(option);
-  });
-}
-// Event listeners
-  document.getElementById('categoriaSelect').addEventListener('change', () => {
-    cargarTemas();
-  });
-
-  document.getElementById('temaSelect').addEventListener('change', () => {
-    cargarSubtemas();
-  });
-// Carga inicial
-  cargarTemas();
-
+  // Generar test
   function generarTest() {
-const normalizar = str =>
-        str.toLowerCase()
-           .replace(/ /g, '_')
-           .normalize('NFD')
-           .replace(/[\u0300-\u036f]/g, '');
-
     const params = new URLSearchParams({
-      categoria: document.getElementById('categoriaSelect').value,
       tema: document.getElementById('temaSelect').value,
       subtema: document.getElementById('subtemaSelect').value,
       num: document.getElementById('numPreguntas').value
@@ -127,6 +94,9 @@ const normalizar = str =>
     
     window.location.href = `test.html?${params.toString()}`;
   }
+
+  // Inicialización
+  cargarTemas();
   </script>
 </body>
 </html>
