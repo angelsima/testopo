@@ -34,10 +34,28 @@ function mostrarPreguntas(preguntasMostrar) {
   quizForm.innerHTML = '';
   
   preguntasMostrar.forEach((pregunta, index) => {
+    // Calcular porcentaje acierto
+    let porcentajeText = "Acierto: —";
+    let color = "black";
+
+    if (pregunta.vecesIntentada > 0) {
+      const porcentaje = Math.round((pregunta.vecesAcertada / pregunta.vecesIntentada) * 100);
+      porcentajeText = `Acierto: ${porcentaje}%`;
+
+      if (porcentaje < 50) {
+        color = "red";
+      } else if (porcentaje < 85) {
+        color = "orange";
+      } else {
+        color = "green";
+      }
+    }
     const div = document.createElement('div');
     div.className = 'question';
     div.innerHTML = `
-        <div class="metadata">#${pregunta.tema} #${pregunta.subtema}</div>
+        <div class="metadata"> <p style="font-size: 0.7em; color: ${color}; margin-top: -8px; margin-bottom: 8px;">
+        ${porcentajeText}
+      </p> #${pregunta.tema} #${pregunta.subtema}</div>
       <p>      <span class="question-number-inline">${index + 1}.</span>
       <strong>${pregunta.texto}</strong></p>
       ${pregunta.opciones.map((opcion, i) => `
