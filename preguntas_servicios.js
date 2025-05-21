@@ -1,4 +1,4 @@
-const preguntasServicios = [
+window.preguntasServicios = [
 	 // CONSTITUCIÓN 1978
   {
     texto: "Desde el punto de vista formal, la Constitución Española de 1978 se considera:",
