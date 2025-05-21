@@ -131,8 +131,8 @@ for (let index = 0; index < totalPreguntas; index++) {
     } else {
       incorrectas++;
     }
-  }
-})();
+   }
+}
 
   // Penalización por errores: 1 punto menos cada 3 incorrectas
   const penalizacion = Math.floor(incorrectas / 3);
