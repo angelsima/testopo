@@ -99,7 +99,7 @@ function corregir() {
     <p>📊 Porcentaje: ${porcentaje}%</p>
   `;
 }
-
+window.corregir = corregir;
 // Inicialización
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarPreguntas();
