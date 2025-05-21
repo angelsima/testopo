@@ -82,14 +82,15 @@ function shuffle(array) {
   return array;
 }
 
-function corregir() {
+async function corregir() {
   let correctas = 0;
   let noContestadas = 0;
   let incorrectas = 0;
 
   const totalPreguntas = document.querySelectorAll('.question').length;
 
-  document.querySelectorAll('.question').forEach((questionDiv) => {
+for (let index = 0; index < totalPreguntas; index++) {
+    const questionDiv = document.querySelectorAll('.question')[index];
     const inputs = questionDiv.querySelectorAll('input');
     const explicacion = questionDiv.querySelector('.explicacion');
     const correcta = parseInt(explicacion.dataset.correcta);
@@ -112,7 +113,17 @@ function corregir() {
     });
 
     explicacion.style.display = 'block';
-
+ // Aquí se actualiza en Firebase el intento
+    if (respuestaSeleccionada !== -1) {
+      const preguntaId = preguntas[index].id;
+      const acertada = (respuestaSeleccionada === correcta);
+       // Actualizamos Firestore
+      await window.db.collection("preguntas").doc(preguntaId).update({
+        vecesIntentada: firebase.firestore.FieldValue.increment(1),
+        vecesAcertada: acertada ? firebase.firestore.FieldValue.increment(1) : firebase.firestore.FieldValue.increment(0),
+        ultimaFecha: new Date()
+      });
+    }
     if (respuestaSeleccionada === -1) {
       noContestadas++;
     } else if (respuestaSeleccionada === correcta) {
