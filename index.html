@@ -50,7 +50,7 @@ button:hover {
   <script>
   // Datos de temas y subtemas
   const temasYSubtemas = {
-    "Constitucion": [
+    "Constitución": [
       "Estructura", 
       "Título Preliminar",
       "Título I",
@@ -91,7 +91,7 @@ button:hover {
   function cargarSubtemas() {
     const tema = document.getElementById('temaSelect').value;
     const subtemaSelect = document.getElementById('subtemaSelect');
-    subtemaSelect.innerHTML = '<option value="all">Todos los subtemas</option>';
+    subtemaSelect.innerHTML = '<option value="all">Tema completo</option>';
     
     if (tema !== 'all') {
       temasYSubtemas[tema].forEach(subtema => {
