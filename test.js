@@ -11,8 +11,8 @@ async function cargarPreguntas() {
   try {
     const snapshot = await window.db.collection("preguntas").get();
     preguntas = snapshot.docs.map(doc => ({
-      id: doc.id,       // <-- aquí
-      ...doc.data()
+     id: doc.id,     
+     ...doc.data()
    }));    
     if (preguntas.length === 0) {
       throw new Error('No se encontraron preguntas en Firestore');
