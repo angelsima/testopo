@@ -12,16 +12,10 @@
   </style>
 </head>
 <body>
-  <h1>Preparación Oposiciones CARM</h1>
+  <h1>Tests Agrupación Profesional de Servicios CARM</h1>
   
   <div class="selector">
     <h2>Selecciona tu test:</h2>
-   <select id="categoriaSelect">
- <option value="all">Todas las categorías</option>
-    <option value="servicios">Agrupación Profesional de Servicios</option>
-    <option value="auxiliar">Auxiliar Administrativo (Aún Vacío)</option>
-    <option value="administrativo">Administrativo (Aún Vacío)</option>
-  </select>
 
   <select id="temaSelect">
     <!-- Opciones se cargarán dinámicamente según categoría -->
@@ -41,17 +35,7 @@ const temasPorCategoria = {
       "Constitucion": ["Estructura", "Título Preliminar", "Título I", "Título II", "Título III", "Título IV", "Título V", "Título VI", "Título VII", "Título VIII", "Título IX", "Título X"],
       "Estatuto": ["Organización Institucional", "Competencias"],
       "Prevención Riesgos": ["Señalización", "EPIs", "Primeros Auxilios"]
-    },
-    auxiliar: {
-      "Constitucion": ["Derechos Fundamentales", "La Corona"],
-      "Estatuto": ["Estatuto Básico", "Reformas"],
-      "Procedimiento Administrativo": ["Fases", "Recursos", "Documentación"]
-    },
-    administrativo: {
-      Constitucion: ["Tribunal Constitucional", "Reforma Constitucional"],
-      Estatuto: ["Asamblea Regional", "Consejo de Gobierno"],
-      "Contratación Pública": ["Tipos de Contratos", "Procedimientos"],
-      Presupuestos: ["Elaboración", "Ejecución", "Control"]
+    }
     }
   };
     
