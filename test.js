@@ -39,9 +39,9 @@ function mostrarPreguntas(preguntasMostrar) {
     const div = document.createElement('div');
     div.className = 'question';
     div.innerHTML = `
-     <div class="question-number">${index + 1}</div>
-    <div class="metadata">#${pregunta.tema} #${pregunta.subtema}</div>
-      <p><strong>${pregunta.texto}</strong></p>
+        <div class="metadata">#${pregunta.tema} #${pregunta.subtema}</div>
+      <p>      <span class="question-number-inline">${index + 1}.</span>
+      <strong>${pregunta.texto}</strong></p>
       ${pregunta.opciones.map((opcion, i) => `
         <div class="options">
           <label>
