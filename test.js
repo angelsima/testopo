@@ -55,6 +55,7 @@ function mostrarPreguntas(preguntasMostrar) {
     }
     const div = document.createElement('div');
     div.className = 'question';
+    div.setAttribute('data-id', pregunta.id);
     div.innerHTML = `
         <div class="metadata"> <p style="font-size: 0.7em; color: ${color}; margin-top: -8px; margin-bottom: 8px;">
         ${porcentajeText}
@@ -90,10 +91,10 @@ async function corregir() {
   let noContestadas = 0;
   let incorrectas = 0;
 
-  const totalPreguntas = document.querySelectorAll('.question').length;
-
-for (let index = 0; index < totalPreguntas; index++) {
-    const questionDiv = document.querySelectorAll('.question')[index];
+const questionDivs = document.querySelectorAll('.question');
+  for (let idx = 0; idx < questionDivs.length; idx++) {
+    const questionDiv = questionDivs[idx];
+    const preguntaId = questionDiv.dataset.id;    
     const inputs = questionDiv.querySelectorAll('input');
     const explicacion = questionDiv.querySelector('.explicacion');
     const correcta = parseInt(explicacion.dataset.correcta);
@@ -118,8 +119,7 @@ for (let index = 0; index < totalPreguntas; index++) {
     explicacion.style.display = 'block';
  // Aquí se actualiza en Firebase el intento
     if (respuestaSeleccionada !== -1) {
-      const preguntaId = preguntas[index].id;
-      const acertada = respuestaSeleccionada === correcta;
+            const acertada = respuestaSeleccionada === correcta;
       try {
         await window.db
           .collection("preguntas")
