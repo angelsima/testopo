@@ -106,12 +106,20 @@ function corregir() {
     }
   });
 
-  const porcentaje = ((correctas / totalPreguntas) * 100).toFixed(1);
+  // Penalización por errores: 1 punto menos cada 3 incorrectas
+  const penalizacion = Math.floor(incorrectas / 3);
+  const correctasAjustadas = Math.max(correctas - penalizacion, 0);
+  const porcentaje = ((correctasAjustadas / totalPreguntas) * 100).toFixed(1);
+
+  // Texto extra para mostrar penalización junto a correctas
+  let textoPenalizacion = penalizacion > 0
+    ? ` -${penalizacion} = ${correctasAjustadas}`
+    : "";
 
   document.getElementById('score').innerHTML = `
     <h3 style="text-align:center">Resultados:</h3>
-    <p style="text-align:center">✅ Correctas: ${correctas}/${totalPreguntas}</p>
-    <p style="text-align:center">❌ Incorrectas: ${incorrectas}/${totalPreguntas}</p>
+    <p style="text-align:center">✅ Correctas: ${correctas}/${totalPreguntas}${textoPenalizacion}</p>
+    <p style="text-align:center">❌ Incorrectas: ${incorrectas}/${totalPreguntas} (${Math.floor(incorrectas/3)} error(es) = -${penalizacion})</p>
     <p style="text-align:center">⚪ No contestadas: ${noContestadas}/${totalPreguntas}</p>
     <p style="text-align:center">📊 Porcentaje: ${porcentaje}%</p>
   `;
