@@ -113,7 +113,7 @@ function corregir() {
 
   // Texto extra para mostrar penalización junto a correctas
   let textoPenalizacion = penalizacion > 0
-    ? ` <span style="color:red">-${penalizacion}</span> = ${correctasAjustadas}/${totalPreguntas}`
+    ? ` <span style="color:red">-${penalizacion}</span> =  <span style="color:green">${correctasAjustadas}</span>/${totalPreguntas}`
     : "";
 
   document.getElementById('score').innerHTML = `
