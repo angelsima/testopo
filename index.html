@@ -13,6 +13,10 @@
 }
     .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
     .row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+    .row label {
+  margin-right: 10px;
+  white-space: nowrap;
+}
     .row h2, .row label { margin-right: 10px; white-space: nowrap; }
  .slider-container {
       position: relative;
@@ -22,26 +26,28 @@
       margin: 0 10px;
     }
     .slider-container input[type="range"] {
+      position: absolute;
       top: 50%;
       transform: translateY(-50%);
       width: 100%;
       margin: 0;
-        pointer-events: none;
-  -webkit-appearance: none;
+        height: 6px;
   background: transparent;
-  height: 6px;
+  pointer-events: none; /* evita que interfieran entre sí */
+  -webkit-appearance: none;
+  z-index: 2;
     }
     /* Estilo de la pista (track) para WebKit */
 input[type="range"]::-webkit-slider-runnable-track {
   height: 6px;
-  background: #ccc;
+  background: transparent;
   border-radius: 3px;
 }
 
 /* Estilo de la pista (track) para Firefox */
 input[type="range"]::-moz-range-track {
   height: 6px;
-  background: #ccc;
+  background: transparent;
   border-radius: 3px;
 }
      input[type=range]::-webkit-slider-thumb {
@@ -53,7 +59,7 @@ input[type="range"]::-moz-range-track {
       cursor: pointer;
       pointer-events: all;
        position: relative;
-  z-index: 1;
+  z-index: 3;
     }
     input[type=range]::-moz-range-thumb {
       background: #007bff;
@@ -62,7 +68,18 @@ input[type="range"]::-moz-range-track {
       border-radius: 50%;
       cursor: pointer;
     }
-
+/* Pista visual personalizada detrás */
+.slider-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 6px;
+  width: 100%;
+  background: #ccc;
+  border-radius: 3px;
+  z-index: 1;
+}
   button {
   background: #007bff;
   color: white;
@@ -127,14 +144,16 @@ button:hover {
       <input type="number" id="numPreguntas" min="5" max="100" value="10" placeholder="Nº de preguntas">
     </div>
       <h2>Tasa de aciertos:</h2>
-     <div class="row">
-      <span id="minLabel">0%</span>
-      <div class="slider-container">
-        <input type="range" id="tasaMin" class="min" min="0" max="100" value="0">
-        <input type="range" id="tasaMax" class="max" min="0" max="100" value="100">
-      </div>
-      <span id="maxLabel">100%</span>
+    <div class="row">
+    <label id="minLabel">0%</label>
+
+    <div class="slider-container">
+      <input type="range" id="minRange" min="0" max="100" value="25">
+      <input type="range" id="maxRange" min="0" max="100" value="75">
     </div>
+
+    <label id="maxLabel">100%</label>
+  </div>
     <div class="row">
       <label for="antiguo">
         <input type="checkbox" id="antiguo"> Más antiguas primero
@@ -177,6 +196,25 @@ const setupSlider = () => {
     const minL = document.getElementById('minLabel');
     const maxL = document.getElementById('maxLabel');
 
+   function updateSliderBackground() {
+      const min = parseInt(minR.value);
+      const max = parseInt(maxR.value);
+      const minLimit = parseInt(minR.min);
+      const maxLimit = parseInt(minR.max);
+
+      const percent1 = ((min - minLimit) / (maxLimit - minLimit)) * 100;
+      const percent2 = ((max - minLimit) / (maxLimit - minLimit)) * 100;
+
+      const gradient = `linear-gradient(to right,
+        #ccc ${percent1}%,
+        #007bff ${percent1}%,
+        #007bff ${percent2}%,
+        #ccc ${percent2}%)`;
+
+      minR.style.background = gradient;
+      maxR.style.background = gradient;
+    }
+
     const updateLabels = () => {
       minL.textContent = `${minR.value}%`;
       maxL.textContent = `${maxR.value}%`;
@@ -186,16 +224,19 @@ const setupSlider = () => {
       let minVal = parseInt(minR.value);
       let maxVal = parseInt(maxR.value);
       
+      // Evitar que se crucen intercambiando valores si es necesario
       if (minVal > maxVal) {
         [minVal, maxVal] = [maxVal, minVal];
         minR.value = minVal;
         maxR.value = maxVal;
       }
       
+      // Control de z-index para el thumb activo y evitar solapamiento raro
       minR.style.zIndex = minVal > 50 ? 2 : 1;
       maxR.style.zIndex = minVal > 50 ? 1 : 2;
       
       updateLabels();
+      updateSliderBackground();
     };
 
     [minR, maxR].forEach(input => {
@@ -205,7 +246,7 @@ const setupSlider = () => {
       });
     });
 
-    syncValues(); // Inicializar
+    syncValues(); // Inicializar fondo y etiquetas
   };
 
   document.addEventListener('DOMContentLoaded', () => {
