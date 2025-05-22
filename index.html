@@ -10,27 +10,73 @@
     .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
     .row { display: flex; align-items: center; flex-wrap: wrap; margin: 10px 0; }
     .row h2, .row label { margin-right: 10px; white-space: nowrap; }
-    .slider-container { position: relative; width: 100%; max-width: 300px; height: 40px; }
-    .slider-container input[type="range"] {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 100%; margin: 0;
-      -webkit-appearance: none; background: transparent; pointer-events: all;
+ .slider-container {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+      height: 40px;
+      margin: 0 10px;
     }
-    /* Z-index para controlar el thumb superior */
-    .slider-container input.min { z-index: 1; }
-    .slider-container input.max { z-index: 2; }
-
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none; background: #007bff; width: 16px; height: 16px; border-radius: 50%; cursor: pointer;
+    .slider-container input[type="range"] {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      margin: 0;
+      -webkit-appearance: none;
+      background: transparent;
+      pointer-events: none;
+    }
+     input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      background: #007bff;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      pointer-events: all;
     }
     input[type=range]::-moz-range-thumb {
-      background: #007bff; width: 16px; height: 16px; border-radius: 50%; cursor: pointer;
+      background: #007bff;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      cursor: pointer;
     }
 
     button, select, input { padding: 8px; font-size: 14px; }
     @media (max-width: 600px) {
-      .row { flex-direction: row; justify-content: space-between; }
-      .slider-container, #minLabel, #maxLabel { flex-shrink: 0; }
+     .row {
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: 8px 0;
+  }
+  
+  .row h2 {
+    font-size: 14px;
+    margin-right: 5px;
+  }
+     .slider-container {
+    max-width: 180px;
+  }
+  
+  #minLabel, #maxLabel {
+    font-size: 12px;
+    min-width: 40px;
+    text-align: center;
+  }
+  
+  button, select, input {
+    font-size: 13px;
+    padding: 6px;
+  }
+  
+  /* Asegurar que todo quede en línea */
+  .selector .row > * {
+    flex-shrink: 0;
+    margin: 0 2px;
+     }
     }
   </style>
 </head>
@@ -94,28 +140,45 @@
     }
     document.getElementById('temaSelect').addEventListener('change', cargarSubtemas);
 
-    // Slider dual-thumb
+const setupSlider = () => {
     const minR = document.getElementById('tasaMin');
     const maxR = document.getElementById('tasaMax');
     const minL = document.getElementById('minLabel');
     const maxL = document.getElementById('maxLabel');
-    function syncSliders() {
-      let minV = parseInt(minR.value);
-      let maxV = parseInt(maxR.value);
-      if (minV > maxV) {
-        // intercambiar valores
-        [minR.value, maxR.value] = [maxR.value, minR.value];
-        minV = parseInt(minR.value);
-        maxV = parseInt(maxR.value);
+
+    const updateLabels = () => {
+      minL.textContent = `${minR.value}%`;
+      maxL.textContent = `${maxR.value}%`;
+    };
+
+    const syncValues = () => {
+      let minVal = parseInt(minR.value);
+      let maxVal = parseInt(maxR.value);
+      
+      if (minVal > maxVal) {
+        [minVal, maxVal] = [maxVal, minVal];
+        minR.value = minVal;
+        maxR.value = maxVal;
       }
-      minR.max = maxV;
-      maxR.min = minV;
-      minL.textContent = minV + '%';
-      maxL.textContent = maxV + '%';
-    }
-    minR.addEventListener('input', syncSliders);
-    maxR.addEventListener('input', syncSliders);
-    syncSliders();
+      
+      minR.style.zIndex = minVal > 50 ? 2 : 1;
+      maxR.style.zIndex = minVal > 50 ? 1 : 2;
+      
+      updateLabels();
+    };
+
+    [minR, maxR].forEach(input => {
+      input.addEventListener('input', syncValues);
+      input.addEventListener('touchstart', function() {
+        this.style.zIndex = 3;
+      });
+    });
+
+    syncValues(); // Inicializar
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupSlider();
 
     // Botón Comenzar
     document.getElementById('btnComenzar').addEventListener('click', () => {
