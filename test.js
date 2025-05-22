@@ -168,37 +168,39 @@ window.corregir = corregir;
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarPreguntas();
 
-  const params   = new URLSearchParams(window.location.search);
-  const tema     = params.get('tema')     || 'all';
-  const subtema  = params.get('subtema')  || 'all';
-  const num      = parseInt(params.get('num'))      || 10;
-  const tasaMin  = parseInt(params.get('tasaMin'))  || 0;
-  const tasaMax  = parseInt(params.get('tasaMax'))  || 100;
-  const ant      = params.get('antiguedad')         || '';
+ const p = new URLSearchParams(window.location.search);
+  const tema    = p.get('tema')    || 'all';
+  const subtema = p.get('subtema') || 'all';
+  const num     = parseInt(p.get('num'))     || 10;
+  const tasaMin = parseInt(p.get('tasaMin')) || 0;
+  const tasaMax = parseInt(p.get('tasaMax')) || 100;
+  const antiguo = p.get('antiguo') === '1';
 
   // 1) filtro tema/subtema
   let fil = filtrarPreguntas(tema, subtema);
 
   // 2) filtro tasa
-  fil = fil.filter(p => {
-    const pct = p.vecesIntentada > 0
-      ? Math.round((p.vecesAcertada / p.vecesIntentada) * 100)
+  fil = fil.filter(q => {
+    const pct = q.vecesIntentada>0
+      ? Math.round((q.vecesAcertada/q.vecesIntentada)*100)
       : 0;
     return pct >= tasaMin && pct <= tasaMax;
   });
 
-  // 3) filtro antigüedad
-  if (ant) {
-    const fechaLim = new Date(ant);
-    fil = fil.filter(p => {
-      if (!p.ultimaRespuesta) return false;
-      const u = p.ultimaRespuesta.toDate();
-      return u < fechaLim;
+   // 3) ordenar si antiguo
+  if (antiguo) {
+    fil.sort((a,b) => {
+      const da = a.ultimaRespuesta?.toDate() || 0;
+      const db = b.ultimaRespuesta?.toDate() || 0;
+      return da - db; // ascendente: más antiguo primero
     });
   }
 
-  // 4) mezclar y recortar
-  const seleccion = shuffle([...fil]).slice(0, num);
+ // 4) mezclar solo si NO es antiguo, y recortar
+  let seleccion;
+  if (antiguo) seleccion = fil.slice(0, num);
+  else            seleccion = shuffle([...fil]).slice(0, num);
+
   mostrarPreguntas(seleccion);
 });
 
