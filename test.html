@@ -61,18 +61,23 @@ button {
       size: A4 portrait;
       margin: 20mm;
     }
-    /* Ocultar todo lo que no sea preguntas o respuestas */
-    button, input, .explicacion, .options, #buttonContainer, #score {
-      display: none !important;
-    }
+       /* Ocultar controles interactivos, no el texto de las opciones */
+  button, input[type=radio] {
+    display: none !important;
+  }
+    /* Ocultar únicamente el contenedor de botones */
+  #buttonContainer {
+    display: none !important;
+  }
+  /* Ocultar puntuación en página de preguntas */
+  #score {
+    display: none !important;
+  }
     /* Mostrar explicaciones/respuestas solo en su contenedor final */
     #respuestasPrint {
-      display: block !important;
-    }
-    /* Asegurar salto de página antes de respuestas */
-    #respuestasPrint {
-      page-break-before: always;
-    }
+    display: block !important;
+    page-break-before: always;
+  }
   }
   </style>
 </head>
