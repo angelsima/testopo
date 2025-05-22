@@ -27,10 +27,24 @@
       transform: translateY(-50%);
       width: 100%;
       margin: 0;
-      -webkit-appearance: none;
-      background: transparent;
-      pointer-events: none;
+        pointer-events: none;
+  -webkit-appearance: none;
+  background: transparent;
+  height: 6px;
     }
+    /* Estilo de la pista (track) para WebKit */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #ccc;
+  border-radius: 3px;
+}
+
+/* Estilo de la pista (track) para Firefox */
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: #ccc;
+  border-radius: 3px;
+}
      input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       background: #007bff;
@@ -39,6 +53,8 @@
       border-radius: 50%;
       cursor: pointer;
       pointer-events: all;
+       position: relative;
+  z-index: 1;
     }
     input[type=range]::-moz-range-thumb {
       background: #007bff;
