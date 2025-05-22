@@ -35,6 +35,8 @@ function filtrarPreguntas(tema, subtema) {
 function mostrarPreguntas(preguntasMostrar) {
   const quizForm = document.getElementById('quizForm');
   quizForm.innerHTML = '';
+
+   const letras = ['a', 'b', 'c', 'd'];
   
   preguntasMostrar.forEach((pregunta, index) => {
     // Calcular porcentaje acierto
@@ -66,7 +68,7 @@ function mostrarPreguntas(preguntasMostrar) {
         <div class="options">
           <label>
             <input type="radio" name="q${index}" value="${i}">
-            ${opcion}
+            <strong>${letras[i]})</strong> ${opcion}
           </label>
         </div>
       `).join('')}
