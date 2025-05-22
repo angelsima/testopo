@@ -45,11 +45,17 @@ button {
   padding: 10px;
 }
     .metadata {
-  position: absolute;
-  top: 8px;
-  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 0.7em;
-  color: #666;
+  margin-bottom: 8px;
+}
+.metadata .acierto {
+  color: black;
+}
+.metadata .tema {
+  text-align: right;
 }
  @media print {
     body {
