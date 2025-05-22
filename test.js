@@ -80,7 +80,18 @@ function mostrarPreguntas(preguntasMostrar) {
     quizForm.appendChild(div);
   });
 }
-
+function mostrarRespuestasCorrectas() {
+  const questionDivs = document.querySelectorAll('.question');
+  const letras = ['a', 'b', 'c', 'd'];
+  const lista = document.getElementById('listaRespuestas');
+  lista.innerHTML = '';
+  questionDivs.forEach((div, idx) => {
+    const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
+    const li = document.createElement('li');
+    li.textContent = `${idx+1} - ${letras[correcta]}`;
+    lista.appendChild(li);
+  });
+}
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -168,19 +179,6 @@ const questionDivs = document.querySelectorAll('.question');
     <p style="text-align:center; font-weight: bold;"">NOTA FINAL: <span style="color:green">${correctasAjustadas}</span>/${totalPreguntas} - ${porcentaje}%</p>
     </div>
   `;
-  
-
-  // dentro de corregir(), justo tras document.getElementById('score').innerHTML = `...`;
-const lista = document.getElementById('listaRespuestas');
-lista.innerHTML = '';
-const letras = ['a','b','c','d'];
-questionDivs.forEach((div, idx) => {
-  const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
-  const li = document.createElement('li');
-  li.textContent = `${idx+1}-${letras[correcta]}`;
-  lista.appendChild(li);
-});
-
 }
 
 window.corregir = corregir;
@@ -200,12 +198,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   mostrarPreguntas(preguntasMezcladas);
 });
   
+// Al final de test.js, fuera de cualquier función:
 document.getElementById('btnImprimir').addEventListener('click', () => {
-  const lista = document.getElementById('listaRespuestas');
-  if (lista.children.length === 0) {
-    alert('Primero debes corregir el test para mostrar las respuestas correctas.');
-    return;
-  }
+  // Antes de imprimir, generamos la lista de respuestas correctas
+  mostrarRespuestasCorrectas();
+
+  // Mostramos el bloque de respuestas y lanzamos la impresión
   document.getElementById('respuestasPrint').style.display = 'block';
   window.print();
   document.getElementById('respuestasPrint').style.display = 'none';
