@@ -169,6 +169,17 @@ const questionDivs = document.querySelectorAll('.question');
 
 window.corregir = corregir;
 
+// Después de pintar score, genera la lista de respuestas
+const lista = document.getElementById('listaRespuestas');
+lista.innerHTML = ''; // limpia
+
+questionDivs.forEach((div, idx) => {
+  const explicacion = div.querySelector('.explicacion').textContent.trim();
+  const li = document.createElement('li');
+  li.textContent = `Pregunta ${idx+1}: ${explicacion}`;
+  lista.appendChild(li);
+});
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarPreguntas();
