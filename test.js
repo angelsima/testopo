@@ -148,6 +148,7 @@ const questionDivs = document.querySelectorAll('.question');
   // Penalización por errores: 1 punto menos cada 3 incorrectas
   const penalizacion = Math.floor(incorrectas / 3);
   const correctasAjustadas = Math.max(correctas - penalizacion, 0);
+   const totalPreguntas = questionDivs.length;
   const porcentaje = ((correctasAjustadas / totalPreguntas) * 100).toFixed(1);
 
   // Texto extra para mostrar penalización junto a correctas
