@@ -88,7 +88,7 @@ function mostrarRespuestasCorrectas() {
   questionDivs.forEach((div, idx) => {
     const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
     const li = document.createElement('li');
-    li.textContent = `${idx+1} - ${letras[correcta]}`;
+    li.textContent = `${letras[correcta]}`;
     lista.appendChild(li);
   });
 }
