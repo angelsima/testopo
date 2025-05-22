@@ -60,6 +60,7 @@ button {
   <div id="score"></div>
   <div id="buttonContainer" style="text-align: center;">
   <button type="button" onclick="corregir()">Corregir</button>
+    <button type="button" id="btnImprimir">Imprimir / PDF</button>
   <button onclick="volverInicio()">Volver al inicio</button>
 </div>
 <!-- Firebase App -->
@@ -80,9 +81,23 @@ button {
   window.db = firebase.firestore();
 </script>
   <script src="test.js" type="module"></script>
+  <script>
+  document.getElementById('btnImprimir').addEventListener('click', () => {
+    // Antes de imprimir, muestra también la sección de respuestas
+    document.getElementById('respuestasPrint').style.display = 'block';
+    window.print();
+    // Al volver del diálogo de impresión, oculta de nuevo las respuestas
+    document.getElementById('respuestasPrint').style.display = 'none';
+  });
+</script>
+
 <script>function volverInicio() {
     // Vuelve a index.html sin parámetros
     window.location.href = 'index.html';
   }</script>
+  <div id="respuestasPrint" style="display:none; page-break-before: always;">
+  <h2 style="text-align:center">Respuestas</h2>
+  <ol id="listaRespuestas"></ol>
+</div>
 </body>
 </html>
