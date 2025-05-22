@@ -167,15 +167,18 @@ const questionDivs = document.querySelectorAll('.question');
     <p style="text-align:center; font-weight: bold;"">NOTA FINAL: <span style="color:green">${correctasAjustadas}</span>/${totalPreguntas} - ${porcentaje}%</p>
     </div>
   `;
+  
 document.getElementById('btnImprimir').addEventListener('click', async () => {
   // Genera la lista de respuestas de nuevo (por si han cambiado)
   const lista = document.getElementById('listaRespuestas');
   lista.innerHTML = '';
   const questionDivs = document.querySelectorAll('.question');
+  const letras = ['a', 'b', 'c', 'd'];
   questionDivs.forEach((div, idx) => {
+     const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
     const explicacion = div.querySelector('.explicacion').textContent.trim();
     const li = document.createElement('li');
-    li.textContent = `Pregunta ${idx+1}: ${explicacion}`;
+li.textContent = `Pregunta ${idx+1} (${letras[correcta]})): ${explicacion}`;
     lista.appendChild(li);
   });
 
