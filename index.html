@@ -3,122 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repaso Oposiciones CARM</title>
+  <title>Repaso Oposiciones CARM</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-    .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
-    h1, h2 {  text-align: center;}
-   select, input, button {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  margin: 10px auto;
-  font-size: 16px;
-  display: block;
-}
-
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0056b3;
-}
+    .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+    .row { display: flex; align-items: center; justify-content: center; margin: 10px 0; flex-wrap: wrap; }
+    .row h2, .row label { margin: 0 10px 0 0; white-space: nowrap; }
+    .row input[type="number"], .row select, .row input[type="range"] {
+      margin-right: 20px;
+    }
+    .range-container { display: flex; align-items: center; }
+    .range-container input { margin: 0 10px; }
+    button { width: auto; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
   </style>
 </head>
 <body>
   <h1>Tests Agrupación Profesional de Servicios CARM</h1>
-  <p style="text-align: center;">Preguntas sacadas del <a href = "https://efiap.carm.es/web/pagina?IDCONTENIDO=58945&IDTIPO=100&RASTRO=c$m2813,51996"><em>Temario oficial de la EFIAP</em></a></p>
-  
+  <p style="text-align: center;">Preguntas sacadas del <a href="https://efiap.carm.es/web/pagina?IDCONTENIDO=58945&IDTIPO=100&RASTRO=c$m2813,51996"><em>Temario oficial de la EFIAP</em></a></p>
   <div class="selector">
-    <h2>Selecciona un tema:</h2>
-    <select id="temaSelect">
-      <option value="all">Todos los temas</option>
-    </select>
-    <select id="subtemaSelect">
-      <option value="all">Tema completo</option>
-    </select>
-    <h2>Nº de preguntas:</h2>
-    <input type="number" id="numPreguntas" min="5" max="100" value="10" placeholder="Nº de preguntas">
-    <button onclick="generarTest()">Comenzar Test</button>
+    <div class="row">
+      <h2>Selecciona un tema:</h2>
+      <select id="temaSelect">
+        <option value="all">Todos los temas</option>
+      </select>
+      <select id="subtemaSelect">
+        <option value="all">Tema completo</option>
+      </select>
+    </div>
+    <div class="row">
+      <h2>Nº de preguntas:</h2>
+      <input type="number" id="numPreguntas" min="5" max="100" value="10" placeholder="Nº de preguntas">
+    </div>
+    <div class="row">
+      <label for="tasaMin">Tasa de aciertos:</label>
+      <div class="range-container">
+        <input type="range" id="tasaMax" min="0" max="100" value="100">
+        <span id="tasaMaxLabel">100%</span>
+        <input type="range" id="tasaMin" min="0" max="100" value="0">
+        <span id="tasaMinLabel">0%</span>
+      </div>
+    </div>
+    <div class="row">
+      <label for="antiguedad">Más antiguas que:</label>
+      <input type="date" id="antiguedad">
+    </div>
+    <div class="row">
+      <button id="btnComenzar">Comenzar Test</button>
+    </div>
   </div>
-
   <script>
-  // Datos de temas y subtemas
-  const temasYSubtemas = {
-    "Constitución": [
-      "Estructura", 
-      "Título Preliminar",
-      "Título I",
-      "Título II",
-      "Título III",
-      "Título IV",
-      "Título V",
-      "Título VI",
-      "Título VII",
-      "Título VIII",
-      "Título IX",
-      "Título X"
-    ],
-    "Estatuto": [
-      "Organización Institucional",
-      "Competencias"
-    ],
-    "Prevención Riesgos": [
-      "Señalización",
-      "EPIs",
-      "Primeros Auxilios"
-    ]
-  };
-
-  // Cargar temas al iniciar
-  function cargarTemas() {
-    const temaSelect = document.getElementById('temaSelect');
-    Object.keys(temasYSubtemas).forEach(tema => {
-      const option = document.createElement('option');
-      option.value = tema;
-      option.textContent = tema;
-      temaSelect.appendChild(option);
-    });
-    cargarSubtemas();
-  }
-
-  // Cargar subtemas según tema seleccionado
-  function cargarSubtemas() {
-    const tema = document.getElementById('temaSelect').value;
-    const subtemaSelect = document.getElementById('subtemaSelect');
-    subtemaSelect.innerHTML = '<option value="all">Tema completo</option>';
-    
-    if (tema !== 'all') {
-      temasYSubtemas[tema].forEach(subtema => {
-        const option = document.createElement('option');
-        option.value = subtema;
-        option.textContent = subtema;
-        subtemaSelect.appendChild(option);
+    const temasYSubtemas = {
+      "Constitución": ["Estructura","Título Preliminar","Título I","Título II","Título III","Título IV","Título V","Título VI","Título VII","Título VIII","Título IX","Título X"],
+      "Estatuto": ["Organización Institucional","Competencias"],
+      "Prevención Riesgos": ["Señalización","EPIs","Primeros Auxilios"]
+    };
+    function cargarTemas() {
+      const temaSelect = document.getElementById('temaSelect');
+      Object.keys(temasYSubtemas).forEach(tema => {
+        const opt = document.createElement('option'); opt.value = tema; opt.textContent = tema;
+        temaSelect.appendChild(opt);
+      }); cargarSubtemas();
+    }
+    function cargarSubtemas() {
+      const tema = document.getElementById('temaSelect').value;
+      const subSelect = document.getElementById('subtemaSelect');
+      subSelect.innerHTML = '<option value="all">Tema completo</option>';
+      if(tema!=='all') temasYSubtemas[tema].forEach(sub => {
+        const opt = document.createElement('option'); opt.value=sub; opt.textContent=sub;
+        subSelect.appendChild(opt);
       });
     }
-  }
+    document.getElementById('temaSelect').addEventListener('change', cargarSubtemas);
 
-  // Event listeners
-  document.getElementById('temaSelect').addEventListener('change', cargarSubtemas);
+    // Actualizar etiquetas de rango
+    const tasaMax = document.getElementById('tasaMax'), tasaMin = document.getElementById('tasaMin');
+    tasaMax.addEventListener('input',()=>document.getElementById('tasaMaxLabel').textContent = tasaMax.value+'%');
+    tasaMin.addEventListener('input',()=>document.getElementById('tasaMinLabel').textContent = tasaMin.value+'%');
 
-  // Generar test
-  function generarTest() {
-    const params = new URLSearchParams({
-      tema: document.getElementById('temaSelect').value,
-      subtema: document.getElementById('subtemaSelect').value,
-      num: document.getElementById('numPreguntas').value
+    // Botón Comenzar
+    document.getElementById('btnComenzar').addEventListener('click', ()=>{
+      const params = new URLSearchParams({
+        tema: document.getElementById('temaSelect').value,
+        subtema: document.getElementById('subtemaSelect').value,
+        num: document.getElementById('numPreguntas').value,
+        tasaMin: tasaMin.value,
+        tasaMax: tasaMax.value,
+        antiguedad: document.getElementById('antiguedad').value || ''
+      });
+      window.location.href = `test.html?${params}`;
     });
-    
-    window.location.href = `test.html?${params.toString()}`;
-  }
-
-  // Inicialización
-  cargarTemas();
+    cargarTemas();
   </script>
 </body>
 </html>
