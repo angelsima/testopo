@@ -173,7 +173,6 @@ const questionDivs = document.querySelectorAll('.question');
   // dentro de corregir(), justo tras document.getElementById('score').innerHTML = `...`;
 const lista = document.getElementById('listaRespuestas');
 lista.innerHTML = '';
-const questionDivs = document.querySelectorAll('.question');
 const letras = ['a','b','c','d'];
 questionDivs.forEach((div, idx) => {
   const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
