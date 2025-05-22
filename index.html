@@ -6,79 +6,146 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Repaso Oposiciones CARM</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-    .selector { background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-    .row { display: flex; align-items: center; flex-wrap: wrap; margin: 10px 0; }
-    .row h2, .row label { margin-right: 10px; white-space: nowrap; }
- .slider-container {
-      position: relative;
-      flex: 1;
-      min-width: 200px;
-      height: 40px;
-      margin: 0 10px;
-    }
-    .slider-container input[type="range"] {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 100%;
-      margin: 0;
-      -webkit-appearance: none;
-      background: transparent;
-      pointer-events: none;
-    }
-     input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      background: #007bff;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      cursor: pointer;
-      pointer-events: all;
-    }
-    input[type=range]::-moz-range-thumb {
-      background: #007bff;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
 
-    button, select, input { padding: 8px; font-size: 14px; }
-    @media (max-width: 600px) {
-     .row {
-    flex-direction: row !important;
-    flex-wrap: nowrap;
-    align-items: center;
-    margin: 8px 0;
-  }
-  
-  .row h2 {
-    font-size: 14px;
-    margin-right: 5px;
-  }
-     .slider-container {
-    max-width: 180px;
-  }
-  
-  #minLabel, #maxLabel {
-    font-size: 12px;
-    min-width: 40px;
+  .selector {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
     text-align: center;
   }
-  
-  button, select, input {
-    font-size: 13px;
-    padding: 6px;
+
+  h1, h2 {
+    text-align: center;
+    margin: 10px 0;
   }
-  
-  /* Asegurar que todo quede en línea */
-  .selector .row > * {
+
+  /* Controles por defecto */
+  select, input[type="number"], button {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px auto;
+    font-size: 16px;
+    display: block;
+    box-sizing: border-box;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+
+  /* Estilos para filas con controles inline */
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  .row h2, .row label {
+    margin-right: 10px;
+    white-space: nowrap;
     flex-shrink: 0;
-    margin: 0 2px;
-     }
+  }
+  .row select,
+  .row input[type="number"],
+  .row button {
+    flex-shrink: 0;
+    margin: 0 5px;
+    width: auto;
+  }
+
+  /* Slider dual-thumb */
+  .slider-container {
+    position: relative;
+    width: 300px;
+    margin: 0 10px;
+    flex-shrink: 0;
+  }
+  .slider-container input[type="range"] {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    margin: 0;
+    -webkit-appearance: none;
+    background: transparent;
+    pointer-events: none;
+  }
+  .slider-container input[type="range"].min,
+  .slider-container input[type="range"].max {
+    pointer-events: all;
+  }
+  .slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #007bff;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: all;
+  }
+  .slider-container input[type="range"]::-moz-range-thumb {
+    background: #007bff;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  /* Etiquetas de porcentaje */
+  #minLabel, #maxLabel {
+    flex-shrink: 0;
+    margin: 0 5px;
+    width: 40px;
+    text-align: center;
+  }
+
+  /* Checkbox inline */
+  .row label input[type="checkbox"] {
+    margin-right: 5px;
+  }
+
+  @media (max-width: 600px) {
+    /* En móvil, todo en la misma línea y más compacto */
+    .row {
+      flex-wrap: nowrap;
+      justify-content: center;
     }
-  </style>
+    .row h2, .row label {
+      font-size: 14px;
+      margin-right: 5px;
+    }
+    .slider-container {
+      width: 180px;
+      margin: 0 5px;
+    }
+    #minLabel, #maxLabel {
+      font-size: 12px;
+      width:  thirty px );
+    }
+    select, input[type="number"], button {
+      max-width: none;
+      width: auto;
+      font-size: 13px;
+      padding: 6px;
+    }
+  }
+</style>
 </head>
 <body>
   <h1>Tests Agrupación Profesional de Servicios CARM</h1>
