@@ -51,7 +51,29 @@ button {
   font-size: 0.7em;
   color: #666;
 }
-
+ @media print {
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    /* A4 vertical */
+    @page {
+      size: A4 portrait;
+      margin: 20mm;
+    }
+    /* Ocultar todo lo que no sea preguntas o respuestas */
+    button, input, .explicacion, .options, #buttonContainer, #score {
+      display: none !important;
+    }
+    /* Mostrar explicaciones/respuestas solo en su contenedor final */
+    #respuestasPrint {
+      display: block !important;
+    }
+    /* Asegurar salto de página antes de respuestas */
+    #respuestasPrint {
+      page-break-before: always;
+    }
+  }
   </style>
 </head>
 <body>
