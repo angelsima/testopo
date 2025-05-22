@@ -168,24 +168,17 @@ const questionDivs = document.querySelectorAll('.question');
     </div>
   `;
   
-document.getElementById('btnImprimir').addEventListener('click', async () => {
-  // Genera la lista de respuestas de nuevo (por si han cambiado)
-  const lista = document.getElementById('listaRespuestas');
-  lista.innerHTML = '';
-  const questionDivs = document.querySelectorAll('.question');
-  const letras = ['a', 'b', 'c', 'd'];
-  questionDivs.forEach((div, idx) => {
-     const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
-    const explicacion = div.querySelector('.explicacion').textContent.trim();
-    const li = document.createElement('li');
-li.textContent = `Pregunta ${idx+1} (${letras[correcta]})): ${explicacion}`;
-    lista.appendChild(li);
-  });
 
-  // Muestra las respuestas y lanza la impresión
-  document.getElementById('respuestasPrint').style.display = 'block';
-  window.print();
-  document.getElementById('respuestasPrint').style.display = 'none';
+  // dentro de corregir(), justo tras document.getElementById('score').innerHTML = `...`;
+const lista = document.getElementById('listaRespuestas');
+lista.innerHTML = '';
+const questionDivs = document.querySelectorAll('.question');
+const letras = ['a','b','c','d'];
+questionDivs.forEach((div, idx) => {
+  const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
+  const li = document.createElement('li');
+  li.textContent = `${idx+1}-${letras[correcta]}`;
+  lista.appendChild(li);
 });
 
 }
@@ -205,4 +198,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const preguntasMezcladas = shuffle([...preguntasFiltradas]).slice(0, num);
   
   mostrarPreguntas(preguntasMezcladas);
+});
+  
+// Al final de test.js, fuera de cualquier función:
+document.getElementById('btnImprimir').addEventListener('click', () => {
+  // Mostramos el contenedor de respuestas
+  document.getElementById('respuestasPrint').style.display = 'block';
+  window.print();
+  document.getElementById('respuestasPrint').style.display = 'none';
 });
