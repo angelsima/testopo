@@ -95,8 +95,8 @@ button:hover {
   <h1>Tests Agrupación Profesional de Servicios CARM</h1>
   <p style="text-align: center;">Preguntas sacadas del <a href="https://efiap.carm.es/web/pagina?IDCONTENIDO=58945&IDTIPO=100&RASTRO=c$m2813,51996"><em>Temario oficial de la EFIAP</em></a></p>
   <div class="selector">
-    <div class="row">
       <h2>Selecciona un tema:</h2>
+    <div class="row">
       <select id="temaSelect">
         <option value="all">Todos los temas</option>
       </select>
@@ -108,8 +108,8 @@ button:hover {
       <h2>Nº de preguntas:</h2>
       <input type="number" id="numPreguntas" min="5" max="100" value="10" placeholder="Nº de preguntas">
     </div>
-    <div class="row">
       <h2>Tasa de aciertos:</h2>
+     <div class="row">
       <span id="minLabel">0%</span>
       <div class="slider-container">
         <input type="range" id="tasaMin" class="min" min="0" max="100" value="0">
@@ -122,9 +122,8 @@ button:hover {
         <input type="checkbox" id="antiguo"> Más antiguas primero
       </label>
     </div>
-    <div class="row">
+
       <button id="btnComenzar">Comenzar Test</button>
-    </div>
   </div>
   <script>
     const temasYSubtemas = {
