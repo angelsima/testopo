@@ -11,9 +11,9 @@ async function cargarPreguntas() {
   try {
     const snapshot = await window.db.collection("preguntas").get();
     preguntas = snapshot.docs.map(doc => ({
-     id: doc.id,     
-     ...doc.data()
-   }));    
+      id: doc.id,
+      ...doc.data()
+    }));
     if (preguntas.length === 0) {
       throw new Error('No se encontraron preguntas en Firestore');
     }
@@ -36,40 +36,37 @@ function mostrarPreguntas(preguntasMostrar) {
   const quizForm = document.getElementById('quizForm');
   quizForm.innerHTML = '';
 
-   const letras = ['a', 'b', 'c', 'd'];
-  
+  const letras = ['a', 'b', 'c', 'd'];
+
   preguntasMostrar.forEach((pregunta, index) => {
     // Calcular porcentaje acierto
     let porcentajeText = "Acierto: —";
     let color = "black";
-
     if (pregunta.vecesIntentada > 0) {
-      const porcentaje = Math.round((pregunta.vecesAcertada / pregunta.vecesIntentada) * 100);
-      porcentajeText = `Acierto: ${porcentaje}%`;
-
-      if (porcentaje < 50) {
-        color = "red";
-      } else if (porcentaje < 85) {
-        color = "orange";
-      } else {
-        color = "green";
-      }
+      const pct = Math.round((pregunta.vecesAcertada / pregunta.vecesIntentada) * 100);
+      porcentajeText = `Acierto: ${pct}%`;
+      if (pct < 50) color = "red";
+      else if (pct < 85) color = "orange";
+      else color = "green";
     }
+
     const div = document.createElement('div');
     div.className = 'question';
-    div.setAttribute('data-id', pregunta.id);
-  div.innerHTML = `
-  <div class="metadata">
-    <span class="acierto" style="color: ${color};">${porcentajeText}</span>
-    <span class="tema">#${pregunta.tema} #${pregunta.subtema}</span>
-  </div>
-      <p>      <span class="question-number-inline">${index + 1}.</span>
-      <strong>${pregunta.texto}</strong></p>
-      ${pregunta.opciones.map((opcion, i) => `
+    div.dataset.id = pregunta.id;
+    div.innerHTML = `
+      <div class="metadata">
+        <span class="acierto" style="color: ${color};">${porcentajeText}</span>
+        <span class="tema">#${pregunta.tema} #${pregunta.subtema}</span>
+      </div>
+      <p>
+        <span class="question-number-inline">${index + 1}.</span>
+        <strong>${pregunta.texto}</strong>
+      </p>
+      ${pregunta.opciones.map((op, i) => `
         <div class="options">
           <label>
             <input type="radio" name="q${index}" value="${i}">
-            <strong>${letras[i]})</strong> ${opcion}
+            <strong>${letras[i]})</strong> ${op}
           </label>
         </div>
       `).join('')}
@@ -80,6 +77,7 @@ function mostrarPreguntas(preguntasMostrar) {
     quizForm.appendChild(div);
   });
 }
+
 function mostrarRespuestasCorrectas() {
   const questionDivs = document.querySelectorAll('.question');
   const letras = ['a', 'b', 'c', 'd'];
@@ -92,6 +90,7 @@ function mostrarRespuestasCorrectas() {
     lista.appendChild(li);
   });
 }
+
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -101,112 +100,114 @@ function shuffle(array) {
 }
 
 async function corregir() {
-  let correctas = 0;
-  let noContestadas = 0;
-  let incorrectas = 0;
+  let correctas = 0, noContestadas = 0, incorrectas = 0;
+  const questionDivs = document.querySelectorAll('.question');
 
-const questionDivs = document.querySelectorAll('.question');
   for (let idx = 0; idx < questionDivs.length; idx++) {
-    const questionDiv = questionDivs[idx];
-    const preguntaId = questionDiv.dataset.id;    
-    const inputs = questionDiv.querySelectorAll('input');
-    const explicacion = questionDiv.querySelector('.explicacion');
-    const correcta = parseInt(explicacion.dataset.correcta);
-
-    let respuestaSeleccionada = -1;
-
-    inputs.forEach((input, i) => {
-      if (input.checked) respuestaSeleccionada = i;
+    const div = questionDivs[idx];
+    const correcta = parseInt(div.querySelector('.explicacion').dataset.correcta);
+    let sel = -1;
+    div.querySelectorAll('input').forEach((inp, i) => {
+      if (inp.checked) sel = i;
     });
 
-    inputs.forEach((input, i) => {
-      const label = input.parentElement;
-      label.classList.remove('correct', 'incorrect');
-
-      if (i === correcta) {
-        label.classList.add('correct');
-      } else if (i === respuestaSeleccionada && i !== correcta) {
-        label.classList.add('incorrect');
-      }
+    // Marcar colores
+    div.querySelectorAll('input').forEach((inp, i) => {
+      const lab = inp.parentElement;
+      lab.classList.remove('correct','incorrect');
+      if (i === correcta) lab.classList.add('correct');
+      else if (i === sel && i !== correcta) lab.classList.add('incorrect');
     });
+    div.querySelector('.explicacion').style.display = 'block';
 
-    explicacion.style.display = 'block';
- // Aquí se actualiza en Firebase el intento
-    if (respuestaSeleccionada !== -1) {
-            const acertada = respuestaSeleccionada === correcta;
+    // Actualizar Firestore
+    if (sel !== -1) {
       try {
         await window.db
           .collection("preguntas")
-          .doc(preguntaId)
+          .doc(div.dataset.id)
           .update({
             vecesIntentada: firebase.firestore.FieldValue.increment(1),
-            vecesAcertada: acertada
+            vecesAcertada: sel === correcta
               ? firebase.firestore.FieldValue.increment(1)
               : firebase.firestore.FieldValue.increment(0),
             ultimaRespuesta: new Date()
           });
-        console.log(`✅ Actualizado pregunta ${preguntaId}`);
       } catch (e) {
-        console.error(`❌ Error actualizando pregunta ${preguntaId}:`, e);
+        console.error('Error actualizando:', e);
       }
     }
-    if (respuestaSeleccionada === -1) {
-      noContestadas++;
-    } else if (respuestaSeleccionada === correcta) {
-      correctas++;
-    } else {
-      incorrectas++;
-    }
-   }
 
-  // Penalización por errores: 1 punto menos cada 3 incorrectas
-  const penalizacion = Math.floor(incorrectas / 3);
-  const correctasAjustadas = Math.max(correctas - penalizacion, 0);
-   const totalPreguntas = questionDivs.length;
-  const porcentaje = ((correctasAjustadas / totalPreguntas) * 100).toFixed(1);
+    if (sel === -1) noContestadas++;
+    else if (sel === correcta) correctas++;
+    else incorrectas++;
+  }
 
-  // Texto extra para mostrar penalización junto a correctas
-  let textoPenalizacion = penalizacion > 0
-    ? ` <span style="color:red">-${penalizacion}</span> `
-    : "";
+  // Penalización
+  const penal = Math.floor(incorrectas / 3);
+  const corrA = Math.max(correctas - penal, 0);
+  const total = questionDivs.length;
+  const pct = ((corrA / total) * 100).toFixed(1);
 
   document.getElementById('score').innerHTML = `
     <h3 style="text-align:center">Resultados:</h3>
-    <p style="text-align:center">✅ = ${correctas}/${totalPreguntas}</p>
-    <p style="text-align:center">❌ = ${incorrectas}/${totalPreguntas} (${incorrectas} errores = <span style="color:red">-${penalizacion}</span>)</p>
-    <p style="text-align:center">⚪ = ${noContestadas}/${totalPreguntas}</p>
-    <div style="border: 2px solid #ccc; border-radius: 8px; padding: 10px; background-color: #f0f8ff; max-width: 400px; margin: 10px auto;">
-    <p style="text-align:center; font-weight: bold;"">NOTA FINAL: <span style="color:green">${correctasAjustadas}</span>/${totalPreguntas} - ${porcentaje}%</p>
+    <p style="text-align:center">✅ ${correctas}/${total}</p>
+    <p style="text-align:center">❌ ${incorrectas}/${total} (${incorrectas} errores = <span style="color:red">-${penal}</span>)</p>
+    <p style="text-align:center">⚪ ${noContestadas}/${total}</p>
+    <div style="border:2px solid #ccc; border-radius:8px; padding:10px; background:#f0f8ff; max-width:400px; margin:10px auto;">
+      <p style="text-align:center; font-weight:bold;">
+        NOTA FINAL: <span style="color:green">${corrA}</span>/${total} - ${pct}%
+      </p>
     </div>
   `;
 }
 
 window.corregir = corregir;
 
-// Inicialización
+// Inicialización + nuevos filtros
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarPreguntas();
-  
-  const urlParams = new URLSearchParams(window.location.search);
-  const tema = urlParams.get('tema') || 'all';
-  const subtema = urlParams.get('subtema') || 'all';
-  const num = parseInt(urlParams.get('num')) || 10;
 
-  const preguntasFiltradas = filtrarPreguntas(tema, subtema);
-  const preguntasMezcladas = shuffle([...preguntasFiltradas]).slice(0, num);
-  
-  mostrarPreguntas(preguntasMezcladas);
+  const params   = new URLSearchParams(window.location.search);
+  const tema     = params.get('tema')     || 'all';
+  const subtema  = params.get('subtema')  || 'all';
+  const num      = parseInt(params.get('num'))      || 10;
+  const tasaMin  = parseInt(params.get('tasaMin'))  || 0;
+  const tasaMax  = parseInt(params.get('tasaMax'))  || 100;
+  const ant      = params.get('antiguedad')         || '';
+
+  // 1) filtro tema/subtema
+  let fil = filtrarPreguntas(tema, subtema);
+
+  // 2) filtro tasa
+  fil = fil.filter(p => {
+    const pct = p.vecesIntentada > 0
+      ? Math.round((p.vecesAcertada / p.vecesIntentada) * 100)
+      : 0;
+    return pct >= tasaMin && pct <= tasaMax;
+  });
+
+  // 3) filtro antigüedad
+  if (ant) {
+    const fechaLim = new Date(ant);
+    fil = fil.filter(p => {
+      if (!p.ultimaRespuesta) return false;
+      const u = p.ultimaRespuesta.toDate();
+      return u < fechaLim;
+    });
+  }
+
+  // 4) mezclar y recortar
+  const seleccion = shuffle([...fil]).slice(0, num);
+  mostrarPreguntas(seleccion);
 });
-  
-// Al final de test.js, fuera de cualquier función:
-document.getElementById('btnImprimir').addEventListener('click', () => {
-  // Antes de imprimir, generamos la lista de respuestas correctas
-  mostrarRespuestasCorrectas();
 
-  // 2) Fuerza un pequeño retardo para que el DOM pinte
+// Imprimir con soluciones
+document.getElementById('btnImprimir').addEventListener('click', () => {
+  mostrarRespuestasCorrectas();
   setTimeout(() => {
     document.getElementById('respuestasPrint').style.display = 'block';
     window.print();
     document.getElementById('respuestasPrint').style.display = 'none';
-  }, 100); // 100ms basta para que pinte el <ol>
+  }, 100);
 });
