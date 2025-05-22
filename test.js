@@ -200,9 +200,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   mostrarPreguntas(preguntasMezcladas);
 });
   
-// Al final de test.js, fuera de cualquier función:
 document.getElementById('btnImprimir').addEventListener('click', () => {
-  // Mostramos el contenedor de respuestas
+  const lista = document.getElementById('listaRespuestas');
+  if (lista.children.length === 0) {
+    alert('Primero debes corregir el test para mostrar las respuestas correctas.');
+    return;
+  }
   document.getElementById('respuestasPrint').style.display = 'block';
   window.print();
   document.getElementById('respuestasPrint').style.display = 'none';
