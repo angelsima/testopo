@@ -58,10 +58,11 @@ function mostrarPreguntas(preguntasMostrar) {
     const div = document.createElement('div');
     div.className = 'question';
     div.setAttribute('data-id', pregunta.id);
-    div.innerHTML = `
-        <div class="metadata"> <p style="font-size: 0.7em; color: ${color}; margin-top: -8px; margin-bottom: 8px;">
-        ${porcentajeText}
-      </p> #${pregunta.tema} #${pregunta.subtema}</div>
+  div.innerHTML = `
+  <div class="metadata" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.7em; margin-bottom: 8px;">
+    <span style="color: ${color};">${porcentajeText}</span>
+    <span style="text-align: right;">#${pregunta.tema} #${pregunta.subtema}</span>
+  </div>
       <p>      <span class="question-number-inline">${index + 1}.</span>
       <strong>${pregunta.texto}</strong></p>
       ${pregunta.opciones.map((opcion, i) => `
