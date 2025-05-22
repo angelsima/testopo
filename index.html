@@ -120,6 +120,9 @@
       "Estatuto": ["Organización Institucional","Competencias"],
       "Prevención Riesgos": ["Señalización","EPIs","Primeros Auxilios"]
     };
+     // Declaración global para usarlas en cualquier parte
+  let minR, maxR;
+    
     function cargarTemas() {
       const temaSelect = document.getElementById('temaSelect');
       Object.keys(temasYSubtemas).forEach(tema => {
@@ -139,35 +142,61 @@
     }
     document.getElementById('temaSelect').addEventListener('change', cargarSubtemas);
 
-function setupSlider() {
-  const minR = document.getElementById('tasaMin');
-  const maxR = document.getElementById('tasaMax');
-  const minL = document.getElementById('minLabel');
-  const maxL = document.getElementById('maxLabel');
-  function sync() {
-    let a = +minR.value, b = +maxR.value;
-    if (a > b) { [a, b] = [b, a]; minR.value = a; maxR.value = b; }
-    minL.textContent = a + '%'; maxL.textContent = b + '%';
-  }
-  minR.addEventListener('input', sync);
-  maxR.addEventListener('input', sync);
-  sync();
-}
+const setupSlider = () => {
+    minR = document.getElementById('tasaMin'); // Ahora usan variables globales
+    maxR = document.getElementById('tasaMax');
+    const minL = document.getElementById('minLabel');
+    const maxL = document.getElementById('maxLabel');
 
-document.addEventListener('DOMContentLoaded', () => {
-  cargarTemas(); setupSlider();
+    const updateLabels = () => {
+      minL.textContent = `${minR.value}%`;
+      maxL.textContent = `${maxR.value}%`;
+    };
+
+    const syncValues = () => {
+      let minVal = parseInt(minR.value);
+      let maxVal = parseInt(maxR.value);
+      
+      if (minVal > maxVal) {
+        [minVal, maxVal] = [maxVal, minVal];
+        minR.value = minVal;
+        maxR.value = maxVal;
+      }
+      
+      minR.style.zIndex = minVal > 50 ? 2 : 1;
+      maxR.style.zIndex = minVal > 50 ? 1 : 2;
+      
+      updateLabels();
+    };
+
+    [minR, maxR].forEach(input => {
+      input.addEventListener('input', syncValues);
+      input.addEventListener('touchstart', function() {
+        this.style.zIndex = 3;
+      });
+    });
+
+    syncValues(); // Inicializar
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupSlider();
+  });
+
+  // Botón Comenzar
   document.getElementById('btnComenzar').addEventListener('click', () => {
-    const p = new URLSearchParams({
+    const params = new URLSearchParams({
       tema: document.getElementById('temaSelect').value,
       subtema: document.getElementById('subtemaSelect').value,
       num: document.getElementById('numPreguntas').value,
-      tasaMin: document.getElementById('tasaMin').value,
-      tasaMax: document.getElementById('tasaMax').value,
-      antiguo: document.getElementById('antiguo').checked ? '1':'0'
+      tasaMin: minR.value,  // Ahora sí existen
+      tasaMax: maxR.value,
+      antiguo: document.getElementById('antiguo').checked ? '1' : '0'
     });
-    window.location.href = `test.html?${p}`;
+    window.location.href = `test.html?${params}`;
   });
-});
+
+  cargarTemas();
   </script>
 </body>
 </html>
