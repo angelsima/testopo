@@ -203,8 +203,10 @@ document.getElementById('btnImprimir').addEventListener('click', () => {
   // Antes de imprimir, generamos la lista de respuestas correctas
   mostrarRespuestasCorrectas();
 
-  // Mostramos el bloque de respuestas y lanzamos la impresión
-  document.getElementById('respuestasPrint').style.display = 'block';
-  window.print();
-  document.getElementById('respuestasPrint').style.display = 'none';
+  // 2) Fuerza un pequeño retardo para que el DOM pinte
+  setTimeout(() => {
+    document.getElementById('respuestasPrint').style.display = 'block';
+    window.print();
+    document.getElementById('respuestasPrint').style.display = 'none';
+  }, 100); // 100ms basta para que pinte el <ol>
 });
