@@ -93,7 +93,7 @@ button {
   <div id="score"></div>
   <div id="buttonContainer" style="text-align: center;">
   <button type="button" onclick="corregir()">Corregir</button>
-    <button type="button" id="btnImprimir">Imprimir / PDF</button>
+    <button id="btnImprimir" type="button">Imprimir / PDF</button>
   <button onclick="volverInicio()">Volver al inicio</button>
 </div>
 <!-- Firebase App -->
@@ -120,8 +120,8 @@ button {
     window.location.href = 'index.html';
   }</script>
   <div id="respuestasPrint" style="display:none; page-break-before: always;">
-  <h2 style="text-align:center">Respuestas correctas</h3>
-  <ul id="listaRespuestas"></ul>
+  <h2 style="text-align:center">Respuestas correctas</h2>
+  <ol id="listaRespuestas"></ol>
 </div>
 </body>
 </html>
