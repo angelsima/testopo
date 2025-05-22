@@ -165,15 +165,22 @@ const questionDivs = document.querySelectorAll('.question');
     <p style="text-align:center; font-weight: bold;"">NOTA FINAL: <span style="color:green">${correctasAjustadas}</span>/${totalPreguntas} - ${porcentaje}%</p>
     </div>
   `;
-  // Después de pintar score, genera la lista de respuestas
-const lista = document.getElementById('listaRespuestas');
-lista.innerHTML = ''; // limpia
+document.getElementById('btnImprimir').addEventListener('click', async () => {
+  // Genera la lista de respuestas de nuevo (por si han cambiado)
+  const lista = document.getElementById('listaRespuestas');
+  lista.innerHTML = '';
+  const questionDivs = document.querySelectorAll('.question');
+  questionDivs.forEach((div, idx) => {
+    const explicacion = div.querySelector('.explicacion').textContent.trim();
+    const li = document.createElement('li');
+    li.textContent = `Pregunta ${idx+1}: ${explicacion}`;
+    lista.appendChild(li);
+  });
 
-questionDivs.forEach((div, idx) => {
-  const explicacion = div.querySelector('.explicacion').textContent.trim();
-  const li = document.createElement('li');
-  li.textContent = `Pregunta ${idx+1}: ${explicacion}`;
-  lista.appendChild(li);
+  // Muestra las respuestas y lanza la impresión
+  document.getElementById('respuestasPrint').style.display = 'block';
+  window.print();
+  document.getElementById('respuestasPrint').style.display = 'none';
 });
 
 }
